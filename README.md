@@ -1,4 +1,4 @@
-Rest-Api-Docu
+Rest-Api-Documentation
 =============
 
 Documentation for the LineMetrics REST Data API
