@@ -1,0 +1,971 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>LineMetrics API SDK Referenz</title>
+
+    <style>
+      .highlight table td { padding: 5px; }
+.highlight table pre { margin: 0; }
+.highlight, .highlight .w {
+  color: #f8f8f2;
+  background-color: #272822;
+}
+.highlight .err {
+  color: #151515;
+  background-color: #ac4142;
+}
+.highlight .c, .highlight .cd, .highlight .cm, .highlight .c1, .highlight .cs {
+  color: #505050;
+}
+.highlight .cp {
+  color: #f4bf75;
+}
+.highlight .nt {
+  color: #f4bf75;
+}
+.highlight .o, .highlight .ow {
+  color: #d0d0d0;
+}
+.highlight .p, .highlight .pi {
+  color: #d0d0d0;
+}
+.highlight .gi {
+  color: #90a959;
+}
+.highlight .gd {
+  color: #ac4142;
+}
+.highlight .gh {
+  color: #6a9fb5;
+  background-color: #151515;
+  font-weight: bold;
+}
+.highlight .k, .highlight .kn, .highlight .kp, .highlight .kr, .highlight .kv {
+  color: #aa759f;
+}
+.highlight .kc {
+  color: #d28445;
+}
+.highlight .kt {
+  color: #d28445;
+}
+.highlight .kd {
+  color: #d28445;
+}
+.highlight .s, .highlight .sb, .highlight .sc, .highlight .sd, .highlight .s2, .highlight .sh, .highlight .sx, .highlight .s1 {
+  color: #90a959;
+}
+.highlight .sr {
+  color: #75b5aa;
+}
+.highlight .si {
+  color: #8f5536;
+}
+.highlight .se {
+  color: #8f5536;
+}
+.highlight .nn {
+  color: #f4bf75;
+}
+.highlight .nc {
+  color: #f4bf75;
+}
+.highlight .no {
+  color: #f4bf75;
+}
+.highlight .na {
+  color: #6a9fb5;
+}
+.highlight .m, .highlight .mf, .highlight .mh, .highlight .mi, .highlight .il, .highlight .mo, .highlight .mb, .highlight .mx {
+  color: #90a959;
+}
+.highlight .ss {
+  color: #90a959;
+}
+    </style>
+    <link href="stylesheets/screen.css" rel="stylesheet" media="screen" />
+    <link href="stylesheets/print.css" rel="stylesheet" media="print" />
+      <script src="javascripts/all.js"></script>
+  </head>
+
+  <body class="index" data-languages="[&quot;javascript&quot;,&quot;csharp&quot;]">
+    <a href="#" id="nav-button">
+      <span>
+        NAV
+        <img src="images/navbar.png" />
+      </span>
+    </a>
+    <div class="tocify-wrapper">
+      <img src="images/logo.png" />
+        <div class="lang-selector">
+              <a href="#" data-language-name="javascript">JavaScript</a>
+              <a href="#" data-language-name="csharp">C#</a>
+        </div>
+        <div class="search">
+          <input type="text" class="search" id="input-search" placeholder="Search">
+        </div>
+        <ul class="search-results"></ul>
+      <div id="toc">
+      </div>
+        <ul class="toc-footer">
+            <li><a href='https://lm3.linemetrics.com'>LineMetrics App</a></li>
+            <li><a href="index.html" style="line-height: 14px;"><img style="height: 14px;margin-right:5px;position: relative;top: 3px;" src="images/en.png">English</a> | &nbsp;
+            <a href="index_de.html"><img style="height: 14px;margin-right:5px;position: relative;top: 3px;" src="images/de.png">Deutsch</a></li>
+        </ul>
+    </div>
+    <div class="page-wrapper">
+      <div class="dark-box"></div>
+      <div class="content">
+        <h1 id="introduction">Introduction</h1>
+
+<p>Welcome to  the LineMetrics API SDK documentation. This SDK simplifies the access to the LineMetrics API and encapsulates the queries into the object model using semantic information.
+For better understanding of the documentation, examples are presented in the right collumn.</p>
+
+<aside class="notice">
+ This documentation is based on the LineMetrics SDK version 2.x.x
+</aside>
+
+<h2 id="version-2-1-0-2">Version 2.1.0.2</h2>
+
+<p>This documentation is currently in version 2.1.0.2</p>
+
+<p><a href="#release-notes">To Release Notes</a></p>
+
+<h1 id="advantages">Advantages</h1>
+
+<p>By encapsulating the <a href="https://rest-api-doc.linemetrics.com/v2/">LineMetrics Rest API</a>, the number of tasks for the enduser (in this case the developer)can be reduced. Access token, validation and renewal, working with data and many more.</p>
+
+<h1 id="basic-structure">Basic structure</h1>
+
+<p>First, a connection to the LineMetrics API must be established. Currently, <code class="prettyprint">Client ID</code> and <code class="prettyprint">Client Secret</code> are necessary to do so. After the successful authentication, a LM_API object will be returned. This can be used as the interface to the LineMetrics server and deals with the entire data traffic. In this way, possible sources of errors, like misplaced headers, formatting errors or access token handling, will cease.</p>
+
+<p>Now the developer has the possibility to address the object directly. Either via ID, via custom key/alias, or via object type. The objective of the SDK is to align the queries to real objects and grant access in a simple way.</p>
+
+<h2 id="object-structure">Object structure</h2>
+
+<p>An object reflects a real object (e.g. vehicle, machine) and describes it also through meta-information. For example, a vehicle, a machine or even entire buildings can be virtualized by the LineMetrics object service. Thus, data is collected from different datasources (LineMetrics hardware, API interfaces, external hardware)and is centrally displayed together with the object.</p>
+
+<p>This is an example of an vehicle that illustrates how an object might be build:</p>
+
+<p><img src="images/demoobject.png"></p>
+
+<h1 id="functions">Functions</h1>
+
+<h2 id="authentication">Authentication</h2>
+
+<p>To use functions, the user has to be authenticated. Therefore, the SDK provides 2 different procedures for authentication</p>
+
+<h3 id="client-credentials">Client Credentials</h3>
+<pre class="highlight javascript"><code><span class="c1">// CLIENT_ID and CLIENT_SECRET can be found in API's on the LineMetrics platform </span>
+<span class="kd">var</span> <span class="nx">api</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">LM_API</span><span class="p">(</span><span class="s2">"client_credentials"</span><span class="p">,</span><span class="nx">CLIENT_ID</span><span class="p">,</span><span class="nx">CLIENT_SECRET</span><span class="p">);</span>
+</code></pre>
+<pre class="highlight csharp"><code><span class="n">ILMService</span> <span class="n">api</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">LineMetricsService</span><span class="p">(</span><span class="s">"client_id"</span><span class="p">,</span> <span class="s">"client_secret"</span><span class="p">);</span>
+</code></pre>
+
+<p>Client Credentials is the type of authentication that is commonly used. Client Credentials allows access to all data of an account through authentication via the parameter ‘Client ID’ and &lsquo;Client Secret’.</p>
+
+<p>For initialisation, only <code class="prettyprint">Client ID</code> and <code class="prettyprint">Client Secret</code> must be used.</p>
+
+<h3 id="passwort-grant">Passwort Grant</h3>
+<pre class="highlight javascript"><code><span class="c1">// Please contact support@linemetrics.com for activation of this type of authentication </span>
+<span class="kd">var</span> <span class="nx">api</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">LM_API</span><span class="p">(</span><span class="s2">"client_credentials"</span><span class="p">,</span><span class="nx">CLIENT_ID</span><span class="p">,</span><span class="nx">CLIENT_SECRET</span><span class="p">,</span><span class="nx">EMAIL</span><span class="p">,</span><span class="nx">PASSWORD</span><span class="p">);</span>
+</code></pre>
+<pre class="highlight csharp"><code><span class="n">ILMService</span> <span class="n">api</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">LineMetricsService</span><span class="p">(</span>
+  <span class="s">"client_id"</span><span class="p">,</span> <span class="s">"client_secret"</span><span class="p">,</span>
+  <span class="s">"email"</span><span class="p">,</span> <span class="s">"password"</span><span class="p">);</span>
+</code></pre>
+
+<p>When using Password Grant, the authentication of the Rest Client happens via the parameter <code class="prettyprint">Client ID</code> and <code class="prettyprint">Client Secret</code>, as usual. Additionally, the parameter <code class="prettyprint">E-Mail</code> und <code class="prettyprint">Password</code> must be transmitted. Thus, a session token is generated, that is valid for the particular account. This type of authentication must be ordered via support@linemetrics.com.</p>
+
+<aside class="warning">
+Important: Currently the password grant only supports read operations, but no write operations.
+</aside>
+
+<h3 id="logout">Logout</h3>
+<pre class="highlight javascript"><code><span class="c1">// Log out the user and disconnents him from the LineMetrics server</span>
+<span class="nx">api</span><span class="p">.</span><span class="nx">logout</span><span class="p">();</span>
+</code></pre>
+<pre class="highlight csharp"><code><span class="n">api</span><span class="p">.</span><span class="nf">Logout</span><span class="p">();</span>
+</code></pre>
+
+<p>When logging out, all access tokens are invalidated.</p>
+
+<h2 id="api-generic-functions">API | Generic functions</h2>
+<pre class="highlight javascript"><code><span class="c1">// Check, whether the actual used OAuth token is valid. </span>
+<span class="c1">// If this should be the case, the callback function, that is transfered as a parameter, is carried out.</span>
+<span class="nx">api</span><span class="p">.</span><span class="nx">checkToken</span><span class="p">(</span><span class="nx">callback</span><span class="p">);</span>
+</code></pre>
+<pre class="highlight javascript"><code><span class="c1">// Load a single object using corresponding ID or alias </span>
+<span class="c1">// with Id</span>
+<span class="nx">api</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="s2">"a091377b1009cbff91ad4e706c0353bf"</span><span class="p">);</span>
+
+<span class="c1">// with Customkey</span>
+<span class="nx">api</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="s2">"my_custom_key"</span><span class="p">);</span>
+
+<span class="c1">// with Id and Alias</span>
+<span class="nx">api</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="s2">"my_custom_key/temperature"</span><span class="p">);</span>
+
+<span class="c1">// with Customkey and Alias</span>
+<span class="nx">api</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="s2">"a091377b1009cbff91ad4e706c0353bf/temperature"</span><span class="p">);</span>
+</code></pre>
+<pre class="highlight javascript"><code><span class="c1">// Load the first level of assets und returns them as an array </span>
+<span class="nx">api</span><span class="p">.</span><span class="nx">loadAssets</span><span class="p">();</span>
+</code></pre>
+<pre class="highlight csharp"><code><span class="c1">// Load the first level of assets und returns them as an array 
+</span><span class="n">api</span><span class="p">.</span><span class="nf">LoadAssets</span><span class="p">();</span>
+
+<span class="c1">// load object with Id
+// (Rückgabe Wert ist BaseType "ObjectBase")
+</span><span class="n">api</span><span class="p">.</span><span class="nf">LoadObject</span><span class="p">(</span><span class="s">"a091377b1009cbff91ad4e706c0353bf"</span><span class="p">));</span>
+
+<span class="c1">// load object with CustomKey
+// (Response is an Object of type "ObjectBase")
+</span><span class="n">api</span><span class="p">.</span><span class="nf">LoadObjectByCustomKey</span><span class="p">(</span><span class="s">"my_custom_key"</span><span class="p">);</span>
+
+<span class="c1">// load an object with CustomKey and Alias
+// (Response is an Object of type "ObjectBase")
+</span><span class="n">api</span><span class="p">.</span><span class="nf">LoadObject</span><span class="p">(</span><span class="s">"my_custom_key"</span><span class="p">,</span> <span class="s">"temperature"</span><span class="p">);</span>
+</code></pre>
+
+<p>Assets, properties, dataStreams and others have a distinct and unique ID. To directly query them, the following functions can be used, regardless of the type.</p>
+
+<p>Also alias and custom key can be used for queries. A more detailed instruction can be found <a href="#custom-keys-und-alias">here</a></p>
+
+<table><thead>
+<tr>
+<th>Function</th>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>checkToken</td>
+<td>None</td>
+<td>Checks, whether the token is valid</td>
+</tr>
+<tr>
+<td>load</td>
+<td>String &#39;id&rsquo;</td>
+<td>Load an object, properties, dataStream, etc <br></td>
+</tr>
+</tbody></table>
+
+<p>Based on the ID or the alias/custom keys
+loadAssets    | None     | Load all assets of level 1</p>
+
+<h2 id="assets">Assets</h2>
+
+<p>Assets are the virtualized form of real objects, for example: vehicles, buildings, machines,…</p>
+
+<p>This assets contain certain properties, documents and dataStreams.</p>
+
+<h3 id="information">Information</h3>
+<pre class="highlight javascript"><code><span class="nx">asset</span><span class="p">.</span><span class="nx">getId</span><span class="p">();</span>
+</code></pre>
+<pre class="highlight javascript"><code><span class="nx">asset</span><span class="p">.</span><span class="nx">getTitle</span><span class="p">();</span>
+</code></pre>
+<pre class="highlight javascript"><code><span class="nx">asset</span><span class="p">.</span><span class="nx">getIcon</span><span class="p">();</span>
+</code></pre>
+<pre class="highlight javascript"><code><span class="nx">asset</span><span class="p">.</span><span class="nx">getImage</span><span class="p">();</span>
+</code></pre>
+<pre class="highlight javascript"><code><span class="nx">asset</span><span class="p">.</span><span class="nx">getChildrenInfo</span><span class="p">();</span>
+<span class="c1">// Response would be:</span>
+<span class="c1">//  {</span>
+<span class="c1">//      property: 4,</span>
+<span class="c1">//      datastream: 2</span>
+<span class="c1">//  }</span>
+</code></pre>
+<pre class="highlight csharp"><code><span class="n">asset</span><span class="p">.</span><span class="n">Id</span><span class="p">;</span>
+</code></pre>
+<pre class="highlight csharp"><code><span class="n">asset</span><span class="p">.</span><span class="n">Title</span><span class="p">;</span>
+</code></pre>
+<pre class="highlight csharp"><code><span class="n">asset</span><span class="p">.</span><span class="n">Icon</span><span class="p">;</span>
+</code></pre>
+<pre class="highlight csharp"><code><span class="n">asset</span><span class="p">.</span><span class="n">CustomKey</span><span class="p">;</span>
+</code></pre>
+<pre class="highlight csharp"><code><span class="n">asset</span><span class="p">.</span><span class="n">ChildrenInfo</span><span class="p">;</span>
+<span class="c1">// Response is type of Dictionary
+// and contains the count and type of the children
+</span></code></pre>
+
+<table><thead>
+<tr>
+<th>Function</th>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>getId</td>
+<td>None</td>
+<td>ID of the asset; is returned, if customer key is available</td>
+</tr>
+<tr>
+<td>getTitle</td>
+<td>None</td>
+<td>Title of the asset</td>
+</tr>
+<tr>
+<td>getIcon</td>
+<td>None</td>
+<td>Icon of the asset</td>
+</tr>
+<tr>
+<td>getImage</td>
+<td>None</td>
+<td>Picture of the asset (absolute path)</td>
+</tr>
+<tr>
+<td>getChildrenInfo</td>
+<td>None</td>
+<td>Return array with all existing children, including the number of children</td>
+</tr>
+</tbody></table>
+
+<h3 id="load-sub-assets">Load sub-assets</h3>
+<pre class="highlight javascript"><code><span class="c1">// Returns an array of underlying assets </span>
+<span class="nx">asset</span><span class="p">.</span><span class="nx">loadAssets</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">assets</span><span class="p">){</span>
+    <span class="c1">// Array assets</span>
+<span class="p">});</span>
+</code></pre>
+<pre class="highlight javascript"><code><span class="c1">// Return an array of underlying properties</span>
+<span class="nx">asset</span><span class="p">.</span><span class="nx">loadProperties</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">properties</span><span class="p">){</span>
+    <span class="c1">// Array properties</span>
+<span class="p">});</span>
+</code></pre>
+<pre class="highlight javascript"><code><span class="c1">// Return an array of underlying dataStreams</span>
+<span class="nx">asset</span><span class="p">.</span><span class="nx">loadDataStreams</span><span class="p">([</span><span class="s2">"temperature"</span><span class="p">,</span><span class="s2">"status"</span><span class="p">]).</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">dataStreams</span><span class="p">){</span>
+    <span class="c1">// Array dataStreams</span>
+<span class="p">});</span>
+</code></pre>
+<pre class="highlight javascript"><code><span class="c1">// Return an array of underlying documents</span>
+<span class="nx">asset</span><span class="p">.</span><span class="nx">loadDocuments</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">documents</span><span class="p">){</span>
+    <span class="c1">// Array documents</span>
+<span class="p">});</span>
+</code></pre>
+<pre class="highlight csharp"><code><span class="c1">// Returns an array of underlying assets 
+</span><span class="n">asset</span><span class="p">.</span><span class="nf">LoadAssets</span><span class="p">();</span>
+</code></pre>
+<pre class="highlight csharp"><code><span class="c1">// Return an array of underlying properties
+</span><span class="n">asset</span><span class="p">.</span><span class="nf">LoadProperties</span><span class="p">();</span>
+</code></pre>
+<pre class="highlight csharp"><code><span class="c1">// Return an array of underlying dataStreams
+</span><span class="n">asset</span><span class="p">.</span><span class="nf">LoadDataStreams</span><span class="p">();</span>
+</code></pre>
+
+<table><thead>
+<tr>
+<th>Function</th>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>loadAssets</td>
+<td>None</td>
+<td>Load all underlying assets</td>
+</tr>
+<tr>
+<td>loadProperties</td>
+<td><code class="prettyprint">Array &#39;alias&#39;</code></td>
+<td>Load all properties with aliases</td>
+</tr>
+</tbody></table>
+
+<p>If empty, all properties are loaded
+loadDataStreams     | <code class="prettyprint">Array &#39;alias&#39;</code>      |  Load all dataStreams with aliases 
+If empty, all dataStreams are loaded
+loadDocuments    | <code class="prettyprint">Array &#39;alias&#39;</code>      |  Load all documents with aliases 
+If empty, all documents are loaded</p>
+
+<h3 id="change-object">Change object</h3>
+
+<p>To change an asset, the different available values can be changed in the following way. To persist and ultimately save the changes, the <code class="prettyprint">save</code> methode is used.</p>
+<pre class="highlight javascript"><code><span class="nx">asset</span><span class="p">.</span><span class="nx">setTitle</span><span class="p">(</span><span class="s2">"New title"</span><span class="p">);</span>
+</code></pre>
+<pre class="highlight javascript"><code><span class="nx">asset</span><span class="p">.</span><span class="nx">setCustomKey</span><span class="p">(</span><span class="s2">"my_key"</span><span class="p">);</span>
+</code></pre>
+<pre class="highlight javascript"><code><span class="nx">asset</span><span class="p">.</span><span class="nx">setIcon</span><span class="p">(</span><span class="s2">"car"</span><span class="p">);</span>
+</code></pre>
+<pre class="highlight javascript"><code><span class="nx">asset</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
+</code></pre>
+<pre class="highlight csharp"><code><span class="n">asset</span><span class="p">.</span><span class="n">Title</span> <span class="p">=</span> <span class="s">"New title"</span><span class="p">;</span>
+</code></pre>
+<pre class="highlight csharp"><code><span class="n">asset</span><span class="p">.</span><span class="n">CustomKey</span> <span class="p">=</span> <span class="s">"my_key"</span><span class="p">;</span>
+</code></pre>
+<pre class="highlight csharp"><code><span class="n">asset</span><span class="p">.</span><span class="n">Icon</span> <span class="p">=</span> <span class="s">"car"</span><span class="p">;</span>
+</code></pre>
+<pre class="highlight csharp"><code><span class="n">asset</span><span class="p">.</span><span class="nf">Save</span><span class="p">();</span>
+</code></pre>
+
+<table><thead>
+<tr>
+<th>Function</th>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>setTitle</td>
+<td><code class="prettyprint">String &#39;title&#39;</code></td>
+<td>Title of the asset</td>
+</tr>
+<tr>
+<td>setCustomKey</td>
+<td><code class="prettyprint">String &#39;key&#39;</code></td>
+<td>Custom Key for the object (Must be unique)</td>
+</tr>
+<tr>
+<td>setIcon</td>
+<td><code class="prettyprint">String &#39;icon&#39;</code></td>
+<td>Icon of the asset. <a href="#verf-gbare-icons">Available Icons</a></td>
+</tr>
+<tr>
+<td>save</td>
+<td>None</td>
+<td>Save the current object</td>
+</tr>
+</tbody></table>
+
+<aside class="notice">
+ Data will only be saved in the database after the `save` call
+</aside>
+
+<h2 id="properties">Properties</h2>
+
+<p>Properties and meta-information describe an object with static values. Changes of properties usually happen very rarely. Changing a property is done manually. For example, the location of a building, area, number of rooms, etc.</p>
+<pre class="highlight javascript"><code><span class="nx">property</span><span class="p">.</span><span class="nx">getId</span><span class="p">();</span>
+</code></pre>
+<pre class="highlight javascript"><code><span class="nx">property</span><span class="p">.</span><span class="nx">getTitle</span><span class="p">();</span>
+</code></pre>
+<pre class="highlight javascript"><code><span class="nx">property</span><span class="p">.</span><span class="nx">getIcon</span><span class="p">();</span>
+</code></pre>
+<pre class="highlight javascript"><code><span class="nx">property</span><span class="p">.</span><span class="nx">getValue</span><span class="p">();</span>
+</code></pre>
+<pre class="highlight csharp"><code><span class="n">property</span><span class="p">.</span><span class="n">Id</span><span class="p">;</span>
+</code></pre>
+<pre class="highlight csharp"><code><span class="n">property</span><span class="p">.</span><span class="n">Title</span><span class="p">;</span>
+</code></pre>
+<pre class="highlight csharp"><code><span class="n">property</span><span class="p">.</span><span class="n">Icon</span><span class="p">;</span>
+</code></pre>
+<pre class="highlight csharp"><code><span class="n">property</span><span class="p">.</span><span class="n">Value</span><span class="p">;</span>
+</code></pre>
+
+<table><thead>
+<tr>
+<th>Function</th>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>getId</td>
+<td>None</td>
+<td>ID of the property; is returned, if an alias is available</td>
+</tr>
+<tr>
+<td>getTitle</td>
+<td>None</td>
+<td>Title of property</td>
+</tr>
+<tr>
+<td>getIcon</td>
+<td>None</td>
+<td>Icon of property</td>
+</tr>
+<tr>
+<td>getValue</td>
+<td>None</td>
+<td>Value of property</td>
+</tr>
+</tbody></table>
+
+<h3 id="change-property">Change property</h3>
+
+<p>To change a property, different available values can be changed in the following way. To persist and ultimately save the changes, the save methode is used.</p>
+<pre class="highlight javascript"><code><span class="nx">property</span><span class="p">.</span><span class="nx">setTitle</span><span class="p">(</span><span class="s2">"New title"</span><span class="p">);</span>
+</code></pre>
+<pre class="highlight javascript"><code><span class="nx">property</span><span class="p">.</span><span class="nx">setAlias</span><span class="p">(</span><span class="s2">"my_alias"</span><span class="p">);</span>
+</code></pre>
+<pre class="highlight javascript"><code><span class="nx">property</span><span class="p">.</span><span class="nx">setIcon</span><span class="p">(</span><span class="s2">"car"</span><span class="p">);</span>
+</code></pre>
+<pre class="highlight javascript"><code><span class="nx">property</span><span class="p">.</span><span class="nx">setValue</span><span class="p">({</span>
+    <span class="s2">"val"</span><span class="p">:</span><span class="s2">"New value"</span>
+<span class="p">});</span>
+</code></pre>
+<pre class="highlight javascript"><code><span class="nx">property</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
+</code></pre>
+<pre class="highlight csharp"><code><span class="n">property</span><span class="p">.</span><span class="n">Title</span> <span class="p">=</span> <span class="s">"New title"</span><span class="p">;</span>
+</code></pre>
+<pre class="highlight csharp"><code><span class="n">property</span><span class="p">.</span><span class="n">Alias</span> <span class="p">=</span> <span class="s">"my_alias"</span><span class="p">;</span>
+</code></pre>
+<pre class="highlight csharp"><code><span class="n">property</span><span class="p">.</span><span class="n">Icon</span> <span class="p">=</span> <span class="s">"car"</span><span class="p">;</span>
+</code></pre>
+<pre class="highlight csharp"><code><span class="n">property</span><span class="p">.</span><span class="n">Value</span> <span class="p">=</span> <span class="k">new</span> <span class="n">LineMetrics</span><span class="p">.</span><span class="n">API</span><span class="p">.</span><span class="n">DataTypes</span><span class="p">.</span><span class="n">Double</span> <span class="p">{</span> <span class="n">Value</span> <span class="p">=</span> <span class="m">3.14</span> <span class="p">};</span>
+</code></pre>
+<pre class="highlight csharp"><code><span class="n">property</span><span class="p">.</span><span class="nf">Save</span><span class="p">();</span>
+</code></pre>
+
+<table><thead>
+<tr>
+<th>Function</th>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>setTitle</td>
+<td><code class="prettyprint">String &#39;title&#39;</code></td>
+<td>Title of property</td>
+</tr>
+<tr>
+<td>setAlias</td>
+<td><code class="prettyprint">String &#39;alias&#39;</code></td>
+<td>Alias for the property <br></td>
+</tr>
+</tbody></table>
+
+<p>(Must be unique within the object)
+setIcon  | <code class="prettyprint">String &#39;icon&#39;</code>      |  Icon of the property. <a href="#verf-gbare-icons">Available icons</a>
+setValue | <code class="prettyprint">Array &#39;val&#39;</code>      |  Value of the property <br> Format is dependent on type. <a href="#Datatypeen-eigenschaften">To property-types</a>
+save  | None      |  Saves the current property</p>
+
+<aside class="notice">
+Data will only be saved in the database after the save call
+</aside>
+
+<h2 id="datastreams">DataStreams</h2>
+
+<p>DataStreams of objects save and visualize dynamic data of an object. DataStreams are often measured and written by an automated process of the LineMetrics hardware, via the API or via hardware of a third party. For example, the location of a vehicle, fuel consumption, outside temperature, etc.</p>
+
+<h3 id="information">Information</h3>
+<pre class="highlight javascript"><code><span class="nx">datastream</span><span class="p">.</span><span class="nx">getTitle</span><span class="p">();</span>
+</code></pre>
+<pre class="highlight javascript"><code><span class="nx">datastream</span><span class="p">.</span><span class="nx">getIcon</span><span class="p">();</span>
+</code></pre>
+<pre class="highlight csharp"><code><span class="n">datastream</span><span class="p">.</span><span class="n">Id</span><span class="p">;</span>
+</code></pre>
+<pre class="highlight csharp"><code><span class="n">datastream</span><span class="p">.</span><span class="n">Title</span><span class="p">;</span>
+</code></pre>
+<pre class="highlight csharp"><code><span class="n">datastream</span><span class="p">.</span><span class="n">Icon</span><span class="p">;</span>
+</code></pre>
+<pre class="highlight csharp"><code><span class="n">datastream</span><span class="p">.</span><span class="n">DataTypes</span><span class="p">;</span>
+<span class="c1">// returns the compatible Input/Output Datatypes
+</span></code></pre>
+
+<table><thead>
+<tr>
+<th>Function</th>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>getId</td>
+<td>None</td>
+<td>ID of the dataStream; is returned, if an alias is available</td>
+</tr>
+<tr>
+<td>getTitle</td>
+<td>None</td>
+<td>Title of the dataStream</td>
+</tr>
+<tr>
+<td>getIcon</td>
+<td>None</td>
+<td>Icon of the dataStream</td>
+</tr>
+</tbody></table>
+
+<h3 id="load-data">Load data</h3>
+<pre class="highlight javascript"><code><span class="c1">// load data of the last hour in form of an array</span>
+<span class="nx">datastream</span><span class="p">.</span><span class="nx">loadData</span><span class="p">(</span><span class="mi">1475154530000</span><span class="p">,</span><span class="mi">1475150930000</span><span class="p">,</span><span class="s2">"PT1M"</span><span class="p">,</span><span class="s2">"Europe/Vienna"</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">values</span><span class="p">){</span>
+    <span class="c1">// Array values</span>
+<span class="p">});</span>
+</code></pre>
+<pre class="highlight javascript"><code><span class="c1">// load the lastvalue</span>
+<span class="nx">datastream</span><span class="p">.</span><span class="nx">loadLastValue</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">value</span><span class="p">){</span>
+    <span class="c1">// Array value</span>
+<span class="p">});</span>
+</code></pre>
+<pre class="highlight javascript"><code><span class="c1">// load data of the last hour and inserts it in an automatically created chart. This will be injected into the container element (A jQuery selector is used, e.g.: $(".chart") )</span>
+<span class="nx">datastream</span><span class="p">.</span><span class="nx">createChart</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s2">"#container"</span><span class="p">),</span><span class="mi">1475154530000</span><span class="p">,</span><span class="mi">1475150930000</span><span class="p">,</span><span class="s2">"PT1M"</span><span class="p">,</span><span class="s2">"Europe/Vienna"</span><span class="p">);</span>
+</code></pre>
+<pre class="highlight csharp"><code><span class="c1">// load data for the specified period and wanted function(RAW, AVERAGE, SUM)
+// return list of instances of the base class "DataReadResponse" 
+// instances must be casted accordingly (AggregatedDataReadResponse or
+// RawDataReadResponse (contain a normal LineMetrics datatype))
+</span><span class="n">datastream</span><span class="p">.</span><span class="nf">LoadData</span><span class="p">(</span>
+  <span class="m">1475154530000</span><span class="p">,</span> <span class="m">1475150930000</span><span class="p">,</span>
+  <span class="s">"Europe/Vienna"</span><span class="p">,</span> <span class="s">"PT1M"</span><span class="p">,</span> <span class="s">"DEFAULT"</span><span class="p">);</span>
+</code></pre>
+<pre class="highlight csharp"><code><span class="c1">// load last value
+// return the base class of datatypes, must be casted accordingly 
+</span><span class="n">datastream</span><span class="p">.</span><span class="nf">LoadLastValue</span><span class="p">();</span>
+</code></pre>
+
+<table><thead>
+<tr>
+<th>Function</th>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>loadData</td>
+<td><code class="prettyprint">Int &#39;from&#39;</code> <br> <code class="prettyprint">Int &#39;to&#39;</code> <br> <code class="prettyprint">Int &#39;granularity&#39;</code> <br> <code class="prettyprint">Int &#39;timezone&#39; *</code></td>
+<td>load data of the last hour in form of an array</td>
+</tr>
+<tr>
+<td>loadLastValue</td>
+<td>None</td>
+<td>load last datapoint</td>
+</tr>
+<tr>
+<td>createChart</td>
+<td><code class="prettyprint">Html El &#39;container&#39;</code> <br> <code class="prettyprint">Int &#39;from&#39;</code> <br> <code class="prettyprint">Int &#39;to&#39;</code> <br> <code class="prettyprint">Int &#39;granularity&#39;</code> <br> <code class="prettyprint">Int &#39;timezone&#39; *</code></td>
+<td>Create chart for the specified period</td>
+</tr>
+</tbody></table>
+
+<p><code class="prettyprint">*</code> = Optional</p>
+
+<p>The granularity determines how much the data is compressed. Therefore, periods of the standardized ISO 8601 format are used. If 1 hour is queried with a granularity of 1 minute, 60 values will be shown. Using a granularity of 15 minutes for 1 hour, only 4 values are displayed.</p>
+
+<p>Examples:</p>
+
+<ul>
+<li><code class="prettyprint">PT1M</code>: 1 minute</li>
+<li><code class="prettyprint">PT4H</code>: 4 hours</li>
+<li><code class="prettyprint">P1D</code>: 1 day</li>
+<li><code class="prettyprint">P1M</code>: 1 month</li>
+</ul>
+
+<aside class="notice">
+timestamps are stated in ms
+</aside>
+
+<aside class="warning">
+ Important: createChart is currently supported by LineMetrics JS SDK only.
+</aside>
+
+<h3 id="change-datastream">Change dataStream</h3>
+<pre class="highlight javascript"><code><span class="nx">datastream</span><span class="p">.</span><span class="nx">setTitle</span><span class="p">(</span><span class="s2">"New title"</span><span class="p">);</span>
+</code></pre>
+<pre class="highlight javascript"><code><span class="nx">datastream</span><span class="p">.</span><span class="nx">setAlias</span><span class="p">(</span><span class="s2">"my_alias"</span><span class="p">);</span>
+</code></pre>
+<pre class="highlight javascript"><code><span class="nx">datastream</span><span class="p">.</span><span class="nx">setIcon</span><span class="p">(</span><span class="s2">"car"</span><span class="p">);</span>
+</code></pre>
+<pre class="highlight javascript"><code><span class="nx">datastream</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
+</code></pre>
+<pre class="highlight csharp"><code><span class="n">datastream</span><span class="p">.</span><span class="n">Title</span> <span class="p">=</span> <span class="s">"New title"</span><span class="p">;</span>
+</code></pre>
+<pre class="highlight csharp"><code><span class="n">datastream</span><span class="p">.</span><span class="n">Alias</span> <span class="p">=</span> <span class="s">"my_alias"</span><span class="p">;</span>
+</code></pre>
+<pre class="highlight csharp"><code><span class="n">datastream</span><span class="p">.</span><span class="n">Icon</span> <span class="p">=</span> <span class="s">"car"</span><span class="p">;</span>
+</code></pre>
+<pre class="highlight csharp"><code><span class="n">datastream</span><span class="p">.</span><span class="nf">Save</span><span class="p">();</span>
+</code></pre>
+
+<table><thead>
+<tr>
+<th>Function</th>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>setTitle</td>
+<td><code class="prettyprint">String &#39;title&#39;</code></td>
+<td>title of the dataStream</td>
+</tr>
+<tr>
+<td>setAlias</td>
+<td><code class="prettyprint">String &#39;alias&#39;</code></td>
+<td>alias for the datastream</td>
+</tr>
+</tbody></table>
+
+<p>(must be unique within the object
+setIcon  | <code class="prettyprint">String &#39;icon&#39;</code>      |  Dicon of the dataStream <a href="#verf-gbare-icons">Available icons</a>
+save  | None      |  save the current dataStream</p>
+
+<h3 id="import-data">Import data</h3>
+<pre class="highlight javascript"><code><span class="c1">// Save new datapoint in the dataStream </span>
+<span class="nx">datastream</span><span class="p">.</span><span class="nx">saveData</span><span class="p">({</span>
+    <span class="s2">"min"</span> <span class="p">:</span> <span class="mf">0.234</span><span class="p">,</span>
+    <span class="s2">"val"</span> <span class="p">:</span> <span class="mf">1.678</span><span class="p">,</span>
+    <span class="s2">"max"</span> <span class="p">:</span> <span class="mf">6.890</span>
+<span class="p">});</span>
+</code></pre>
+<pre class="highlight csharp"><code><span class="c1">// Save new datapoint in the dataStream 
+</span><span class="n">datastream</span><span class="p">.</span><span class="nf">saveData</span><span class="p">(</span>
+    <span class="k">new</span> <span class="n">LineMetrics</span><span class="p">.</span><span class="n">API</span><span class="p">.</span><span class="n">DataTypes</span><span class="p">.</span><span class="n">Double</span> <span class="p">{</span> <span class="n">Value</span> <span class="p">=</span> <span class="m">3.14</span> <span class="p">});</span>
+</code></pre>
+
+<table><thead>
+<tr>
+<th>Function</th>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>saveData</td>
+<td><code class="prettyprint">Array &#39;point&#39;</code></td>
+<td>Require the array in the right format. <a href="#Datatypeen-messpunkte">To Datatypes</a></td>
+</tr>
+</tbody></table>
+
+<h2 id="documents">Documents</h2>
+<pre class="highlight javascript"><code><span class="nb">document</span><span class="p">.</span><span class="nx">getId</span><span class="p">();</span>
+</code></pre>
+<pre class="highlight javascript"><code><span class="nb">document</span><span class="p">.</span><span class="nx">getTitle</span><span class="p">();</span>
+</code></pre>
+<pre class="highlight javascript"><code><span class="nb">document</span><span class="p">.</span><span class="nx">getFile</span><span class="p">();</span>
+</code></pre>
+
+<table><thead>
+<tr>
+<th>Function</th>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>getId</td>
+<td>None</td>
+<td>ID of the document</td>
+</tr>
+<tr>
+<td>getTitle</td>
+<td>None</td>
+<td>title of the document</td>
+</tr>
+<tr>
+<td>getFile</td>
+<td>None</td>
+<td>URL, where the document can be found</td>
+</tr>
+</tbody></table>
+
+<h3 id="change-document">Change document</h3>
+
+<p>To change a document, different available values can be changed in the following way. To persist and ultimately save the changes, the save method is used.</p>
+<pre class="highlight javascript"><code><span class="nb">document</span><span class="p">.</span><span class="nx">setTitle</span><span class="p">(</span><span class="s2">"New title"</span><span class="p">);</span>
+</code></pre>
+<pre class="highlight javascript"><code><span class="nx">property</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
+</code></pre>
+
+<table><thead>
+<tr>
+<th>Function</th>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>setTitle</td>
+<td><code class="prettyprint">String &#39;title&#39;</code></td>
+<td>title of the document</td>
+</tr>
+<tr>
+<td>save</td>
+<td>None</td>
+<td>save current document</td>
+</tr>
+</tbody></table>
+
+<aside class="notice">
+Data will only be saved in the database after the `save` call
+</aside>
+
+<h1 id="ressources">Ressources</h1>
+
+<h2 id="custom-keys-and-alias">Custom Keys and Alias</h2>
+
+<p>Custom keys and alias should be used to simplify the handling with objects, dataStreams and others. Each element that can be queried via the API (assets, dataStreams, properties,…) have a distinct ID. This ID is a construct of 32 consecutive characters and numbers and represents a unique ID.</p>
+
+<h3 id="custom-key">Custom Key</h3>
+
+<p>For objects a custom key can be defined. By doing so, it is possible to query a specific object not only via ist ID, but also via the custom key. Altogether, a custom key is only allowed 1x in the whole system.</p>
+
+<h3 id="alias">Alias</h3>
+
+<p>A dataStream / A property is the occurrence of an asset and illustrates the current state (as a value or as time series) or the properties of an asset (e.g. how big is my building?) This type of information can be directly addressed using an UID - like an asset. Simultaneously, there is the possibility to deposit a so-called <code class="prettyprint">Alias</code>. This is also freely selectable and has to be distinct within the account. Using <code class="prettyprint">Custom Key</code> and <code class="prettyprint">Alias</code> users can query for data in the following way: <code class="prettyprint">Machine1.Occupancy_rate</code> -&gt; show me the occupancy rate of machine 1</p>
+
+<h2 id="datatype-datastream">Datatype dataStream</h2>
+
+<table><thead>
+<tr>
+<th>Datatype</th>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Double</td>
+<td><code class="prettyprint">Float &#39;val&#39;</code></td>
+<td>Value</td>
+</tr>
+<tr>
+<td>DoubleAverage</td>
+<td><code class="prettyprint">Float &#39;val&#39;</code> <br> <code class="prettyprint">Float &#39;min&#39;</code> <br> <code class="prettyprint">Float &#39;max&#39;</code></td>
+<td>Average <br> Minimum <br>value <br> Maximum value</td>
+</tr>
+<tr>
+<td>Bool</td>
+<td><code class="prettyprint">Bool &#39;val&#39;</code></td>
+<td>Boolean 0 or 1</td>
+</tr>
+<tr>
+<td>GeoCoord</td>
+<td><code class="prettyprint">Float &#39;lat&#39;</code>  <br> <code class="prettyprint">Float &#39;long&#39;</code></td>
+<td>Latitude GPS value (geographic latitude) <br> Longitude GPS value (geographic longitude)</td>
+</tr>
+<tr>
+<td>String</td>
+<td><code class="prettyprint">String &#39;val&#39;</code></td>
+<td>Text</td>
+</tr>
+</tbody></table>
+
+<h2 id="datatype-properties">Datatype properties</h2>
+
+<table><thead>
+<tr>
+<th>Datatype</th>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Text</td>
+<td><code class="prettyprint">String &#39;val&#39;</code></td>
+<td>Value</td>
+</tr>
+<tr>
+<td>Integer</td>
+<td><code class="prettyprint">Int &#39;val&#39;</code></td>
+<td>Value</td>
+</tr>
+<tr>
+<td>Double</td>
+<td><code class="prettyprint">Double &#39;val&#39;</code></td>
+<td>Value</td>
+</tr>
+<tr>
+<td>GeoCoord</td>
+<td><code class="prettyprint">Float &#39;lat&#39;</code>  <br> <code class="prettyprint">Float &#39;long&#39;</code> <br> <code class="prettyprint">Int &#39;precision&#39;</code></td>
+<td>Latitude GPS Value (geographic latitude) <br> Longitude GPS value (geographic longitude)<br>Precision in m</td>
+</tr>
+<tr>
+<td>GeoAddress</td>
+<td><code class="prettyprint">String &#39;val&#39;</code><br> <code class="prettyprint">Float &#39;lat&#39;</code>  <br> <code class="prettyprint">Float &#39;long&#39;</code> <br> <code class="prettyprint">Int &#39;precision&#39;</code></td>
+<td>Physical address <br> Latitude GPS Wert (geographic latitude) <br> Longitude GPS Wert (geographic longitude) <br> Precision in m</td>
+</tr>
+<tr>
+<td>Boolean</td>
+<td><code class="prettyprint">Bool &#39;val&#39;</code></td>
+<td>Boolean 0 or 1</td>
+</tr>
+<tr>
+<td>Date</td>
+<td><code class="prettyprint">Timestamp &#39;ts&#39;</code></td>
+<td>Timestamp in ms</td>
+</tr>
+</tbody></table>
+
+<h2 id="available-icons">Available Icons</h2>
+
+<p><img src="images/icons.png"></p>
+
+<h1 id="sample-codes">Sample codes</h1>
+<pre class="highlight javascript"><code><span class="kd">var</span> <span class="nx">CLIENT_SECRET</span> <span class="o">=</span> <span class="s2">"a605eaf6cffe49d7067901293c302a7a"</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">CLIENT_ID</span> <span class="o">=</span> <span class="s2">"api_207da9c8056"</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">api</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">LM_API</span><span class="p">(</span><span class="nx">CLIENT_ID</span><span class="p">,</span><span class="nx">CLIENT_SECRET</span><span class="p">);</span>
+<span class="c1">//api.getToken();</span>
+<span class="c1">//api.loadObject("b6a3e45af5db4fe1a2c324128db63caf");</span>
+
+<span class="c1">// Load Assets of 1. layer</span>
+<span class="nx">api</span><span class="p">.</span><span class="nx">loadAssets</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">assets</span><span class="p">){</span>
+    <span class="nx">$</span><span class="p">(</span><span class="s2">".title"</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="nx">assets</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">getTitle</span><span class="p">());</span>
+    <span class="nx">$</span><span class="p">(</span><span class="s2">".image"</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"src"</span><span class="p">,</span><span class="nx">assets</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">getImage</span><span class="p">());</span>
+
+    <span class="c1">// Load Properties of 1. Asset</span>
+    <span class="nx">assets</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">loadProperties</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">children</span><span class="p">){</span>
+        <span class="nx">$</span><span class="p">(</span><span class="s2">"body"</span><span class="p">).</span><span class="nx">append</span><span class="p">(</span><span class="s2">"&lt;h2&gt;Properties&lt;/h2&gt;"</span><span class="p">);</span>
+        <span class="nx">children</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">entry</span><span class="p">)</span> <span class="p">{</span>     
+            <span class="nx">$</span><span class="p">(</span><span class="s2">"body"</span><span class="p">).</span><span class="nx">append</span><span class="p">(</span><span class="s2">"&lt;span&gt;"</span><span class="o">+</span><span class="nx">entry</span><span class="p">.</span><span class="nx">getTitle</span><span class="p">()</span><span class="o">+</span><span class="s2">"&lt;/span&gt;&lt;br&gt;"</span><span class="p">)</span>
+        <span class="p">});</span>
+    <span class="p">});</span>
+
+    <span class="c1">// Load Data Streams of 1. Asset</span>
+    <span class="nx">assets</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">loadDataStreams</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">children</span><span class="p">){</span>
+
+        <span class="nx">children</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">entry</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">el</span><span class="o">=</span><span class="nx">$</span><span class="p">(</span><span class="s2">"&lt;div/&gt;"</span><span class="p">);</span>
+            <span class="nx">$</span><span class="p">(</span><span class="s2">"body"</span><span class="p">).</span><span class="nx">append</span><span class="p">(</span><span class="s2">"&lt;h2&gt;"</span><span class="o">+</span><span class="nx">entry</span><span class="p">.</span><span class="nx">getTitle</span><span class="p">()</span><span class="o">+</span><span class="s2">"&lt;/h2&gt;"</span><span class="p">);</span>
+            <span class="nx">$</span><span class="p">(</span><span class="s2">"body"</span><span class="p">).</span><span class="nx">append</span><span class="p">(</span><span class="nx">el</span><span class="p">);</span>
+            <span class="nx">entry</span><span class="p">.</span><span class="nx">createChart</span><span class="p">(</span><span class="nx">el</span><span class="p">);</span>
+        <span class="p">});</span>
+
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">children</span><span class="p">);</span>
+    <span class="p">});</span>
+<span class="p">});</span>
+</code></pre>
+
+<p>Here you can find a sample code to test our API. This code connects with one of our demo-accounts. After successfully reading out the assets of the first level, the SDK will load the properties and dataStreams of the first asset and display the data of each dataStream as a chart.</p>
+
+<h1 id="release-notes">Release Notes</h1>
+
+<h3 id="version-2-1-0-2">Version 2.1.0.2:</h3>
+
+<ul>
+<li>Integration C# Sample codes</li>
+</ul>
+
+<h3 id="version-2-1-0-1">Version 2.1.0.1:</h3>
+
+<ul>
+<li>Logout functionality</li>
+</ul>
+
+<h3 id="version-2-1-0-0">Version 2.1.0.0:</h3>
+
+<ul>
+<li>Readout of Alias/Unique Key</li>
+<li>Login via Password Grant</li>
+<li>Logout via Password Grant</li>
+<li>Rename datapoints auf DataStreams (Messpunkte)</li>
+<li>Writting data in the LineMetrics Cloud</li>
+<li>Updating elementes (Objects, dataStream, properties,…)</li>
+</ul>
+
+<h3 id="version-2-0-9-0">Version 2.0.9.0:</h3>
+
+<ul>
+<li>First stable version with release for developers</li>
+<li>Readout of assets in all levels</li>
+<li>Readout of properties of assets</li>
+<li>Readout of dataStream of assets</li>
+<li>Readout of datapoints of a dataStream</li>
+<li>Fast creation of charts</li>
+<li>Readout of dashboard</li>
+</ul>
+
+      </div>
+      <div class="dark-box">
+          <div class="lang-selector">
+                <a href="#" data-language-name="javascript">JavaScript</a>
+                <a href="#" data-language-name="csharp">C#</a>
+          </div>
+      </div>
+    </div>
+  </body>
+</html>

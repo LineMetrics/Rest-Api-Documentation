@@ -1,0 +1,1046 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>LineMetrics API Referenz</title>
+
+    <style>
+      .highlight table td { padding: 5px; }
+.highlight table pre { margin: 0; }
+.highlight, .highlight .w {
+  color: #f8f8f2;
+  background-color: #272822;
+}
+.highlight .err {
+  color: #151515;
+  background-color: #ac4142;
+}
+.highlight .c, .highlight .cd, .highlight .cm, .highlight .c1, .highlight .cs {
+  color: #505050;
+}
+.highlight .cp {
+  color: #f4bf75;
+}
+.highlight .nt {
+  color: #f4bf75;
+}
+.highlight .o, .highlight .ow {
+  color: #d0d0d0;
+}
+.highlight .p, .highlight .pi {
+  color: #d0d0d0;
+}
+.highlight .gi {
+  color: #90a959;
+}
+.highlight .gd {
+  color: #ac4142;
+}
+.highlight .gh {
+  color: #6a9fb5;
+  background-color: #151515;
+  font-weight: bold;
+}
+.highlight .k, .highlight .kn, .highlight .kp, .highlight .kr, .highlight .kv {
+  color: #aa759f;
+}
+.highlight .kc {
+  color: #d28445;
+}
+.highlight .kt {
+  color: #d28445;
+}
+.highlight .kd {
+  color: #d28445;
+}
+.highlight .s, .highlight .sb, .highlight .sc, .highlight .sd, .highlight .s2, .highlight .sh, .highlight .sx, .highlight .s1 {
+  color: #90a959;
+}
+.highlight .sr {
+  color: #75b5aa;
+}
+.highlight .si {
+  color: #8f5536;
+}
+.highlight .se {
+  color: #8f5536;
+}
+.highlight .nn {
+  color: #f4bf75;
+}
+.highlight .nc {
+  color: #f4bf75;
+}
+.highlight .no {
+  color: #f4bf75;
+}
+.highlight .na {
+  color: #6a9fb5;
+}
+.highlight .m, .highlight .mf, .highlight .mh, .highlight .mi, .highlight .il, .highlight .mo, .highlight .mb, .highlight .mx {
+  color: #90a959;
+}
+.highlight .ss {
+  color: #90a959;
+}
+    </style>
+    <link href="stylesheets/screen.css" rel="stylesheet" media="screen" />
+    <link href="stylesheets/print.css" rel="stylesheet" media="print" />
+      <script src="javascripts/all.js"></script>
+  </head>
+
+  <body class="index" data-languages="[&quot;shell&quot;]">
+    <a href="#" id="nav-button">
+      <span>
+        NAV
+        <img src="images/navbar.png" />
+      </span>
+    </a>
+    <div class="tocify-wrapper">
+      <img src="images/logo.png" />
+        <div class="lang-selector">
+              <a href="#" data-language-name="shell">shell</a>
+        </div>
+        <div class="search">
+          <input type="text" class="search" id="input-search" placeholder="Search">
+        </div>
+        <ul class="search-results"></ul>
+      <div id="toc">
+      </div>
+        <ul class="toc-footer">
+            <li><a href='https://lm3.linemetrics.com'>LineMetrics App</a></li>
+        </ul>
+    </div>
+    <div class="page-wrapper">
+      <div class="dark-box"></div>
+      <div class="content">
+        <h1 id="linemetrics-api-v1">LineMetrics API (v1)</h1>
+
+<p>Willkommen bei der LineMetrics REST API Dokumentation. Die LineMetrics API soll es Ihnen ermöglichen, auf die
+Basisfunktionalität der LineMetrics Cloud zuzugreifen. Dazu gehört unter anderem das Abfragen von bestehenden
+<code class="prettyprint">Streams</code> und das Speichern von Daten in einem der API zugewiesenen Eingang.</p>
+
+<p>Beispielcode stellen wir aktuell zum Testen nur für Unix-Kommandozeile (Shell) zur Verfügung. Es ist geplant,
+den Beispielcode für andere Programmiersprachen sukzessive auszubauen. Wir freuen uns hier gerne über Ihre Mithilfe.</p>
+
+<p>Die API befindet sich aktuell in der Version 1, wobei sich diese Version gerade im Aufbau befindet. Bestehende
+Endpunkten &ldquo;sollten&rdquo; sich nicht mehr verändern, es werden aber laufend neue Endpunkte hinzukommen. Die Versionierung
+soll eine nahtlose Adaptierung von bestehenden Endpunkten ermöglichen, ohne die Abwärtskompatibilität zu beeinflussen.</p>
+
+<h1 id="authentifizierung">Authentifizierung</h1>
+
+<h2 id="oauth2">OAuth2</h2>
+
+<blockquote>
+<p>Authentifizieren mittels OAuth &amp; Client-Credentials </p>
+</blockquote>
+<pre class="highlight shell"><code>curl <span class="s2">"https://lm3api.linemetrics.com/oauth/access_token"</span>
+  -d <span class="s1">'client_id={{CLIENT_ID}}&amp;grant_type=client_credentials&amp;client_secret={{CLIENT_SECRET}}'</span>
+  -X POST
+</code></pre>
+
+<blockquote>
+<p>Antwort vom Server</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+    </span><span class="nt">"access_token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"{{key}}"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"token_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Bearer"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"expires_in"</span><span class="p">:</span><span class="w"> </span><span class="mi">3600</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>Die aktuelle Version der REST API Dokumentation unterstützt ausschließlich eine Authentifizierung mittels
+Client-Credentials über das OAuth2 Protokoll. Dabei muss über einen REST Aufruf und der Parameter <code class="prettyprint">Client ID</code> und
+<code class="prettyprint">Client Secret</code> ein Session Token erzeugt werden. Mit diesem Session Token können dann Abfragen auf die
+anderen Ressourcen (Daten/Objekt Ressourcen) durchgeführt werden.</p>
+
+<h3 id="parameter">Parameter</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Beschreibung</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>client_id</td>
+<td>ID die den Zugang eindeutig identifiziert</td>
+</tr>
+<tr>
+<td>client_secret</td>
+<td>Client Secret, welche den Zugriff mittels Client ID authorisiert und es erlaubt einen neuen Session Token zu erzeugen</td>
+</tr>
+<tr>
+<td>grant_type</td>
+<td>Art der OAuth-Authentifizierung. Aktuell wird nur die client_credentials Authentifizierung unterstützt. Dh ein Zugriff über Session Token, welcher mittels <code class="prettyprint">client_id</code> und <code class="prettyprint">client_secret</code> erzeugt wird.</td>
+</tr>
+</tbody></table>
+
+<h3 id="antwort">Antwort</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Beschreibung</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>access_token</td>
+<td>Session Token der für alle weiteren Abfragen auf API Ressourcen verwendet und per Header übergeben wird.</td>
+</tr>
+<tr>
+<td>token_type</td>
+<td>Definiert die Art des Session Tokens und wird beim Authentifizieren als Prefix im Header mitangegeben.</td>
+</tr>
+<tr>
+<td>expires_in</td>
+<td>Gültigkeitsdauer des Tokens in Sekunden</td>
+</tr>
+</tbody></table>
+
+<h1 id="daten-typen">Daten Typen</h1>
+
+<p>Daten Typen sind ein essenzieller Bestandteil im Umgang mit Daten in der LineMetrics Cloud bzw. im Umgang mit der
+Rest API, weil durch Daten Typen festgelegt werden kann, wie die eigentlichen Daten aussehen bzw. welche Ausprägungen
+ein einzelner Datenpunkt besitzt.</p>
+
+<p>Daten Typen erhält man einerseits bei der Abfrage der für den API Endpunkt verfügbaren Eingänge (Inputs) bzw.
+auch wenn konkrete Messpunkte eines Objekts abgefragt werden.</p>
+
+<h2 id="double">Double</h2>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"val"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mf">123.0</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>Einfacher Datentyp der nur einen primitiven <code class="prettyprint">double</code> Datentyp kapselt.</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Prim. Datentyp</th>
+<th>Beschreibung</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>val</td>
+<td>Double</td>
+<td>Wert</td>
+</tr>
+</tbody></table>
+
+<h2 id="doubleaverage">DoubleAverage</h2>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"val"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mf">123.3</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"min"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mf">10.0</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"max"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mf">456.12</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>Ein Datentyp der neben dem Durchschnittswert auch die Grenzwerte (Min/Max) eines Datenpunkts liefert.</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Prim. Datentyp</th>
+<th>Beschreibung</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>val</td>
+<td>Double</td>
+<td>Durchschnittswert</td>
+</tr>
+<tr>
+<td>min</td>
+<td>Double</td>
+<td>Minimum Wert</td>
+</tr>
+<tr>
+<td>max</td>
+<td>Double</td>
+<td>Maximum Wert</td>
+</tr>
+</tbody></table>
+
+<h2 id="bool">Bool</h2>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"val"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>Einfacher Datentyp der nur einen primitiven <code class="prettyprint">bool</code> Datentyp kapselt.</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Prim. Datentyp</th>
+<th>Beschreibung</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>val</td>
+<td>Boolean</td>
+<td>Booleanwert 0 oder 1</td>
+</tr>
+</tbody></table>
+
+<h2 id="geocoord">GeoCoord</h2>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"lat"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mf">48.20863000</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"long"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mf">16.39741000</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>Ein Datentyp der Geokoordinaten in Form eines Longitude und Latitude Wertes kapselt.</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Prim. Datentyp</th>
+<th>Beschreibung</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>lat</td>
+<td>Double</td>
+<td>Latitude GPS Wert (Geographische Breite)</td>
+</tr>
+<tr>
+<td>long</td>
+<td>Double</td>
+<td>Longitude GPS Wert (Längengrad)</td>
+</tr>
+</tbody></table>
+
+<h2 id="string">String</h2>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"val"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Mein Text"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>Einfacher Datentyp der nur einen primitiven <code class="prettyprint">String</code> Datentyp kapselt.</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Prim. Datentyp</th>
+<th>Beschreibung</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>val</td>
+<td>String</td>
+<td>Text</td>
+</tr>
+</tbody></table>
+
+<h1 id="daten-ressourcen">Daten Ressourcen</h1>
+
+<h2 id="liste-mit-api-eing-ngen">Liste mit API Eingängen</h2>
+
+<blockquote>
+<p>Abfragen der verfügbaren Eingänge des API Endpunkts</p>
+</blockquote>
+<pre class="highlight shell"><code>curl <span class="s2">"https://lm3api.linemetrics.com/v1/data/inputs"</span>
+  -H <span class="s2">"Authorization: Bearer {{key}}"</span>
+</code></pre>
+
+<blockquote>
+<p>Antwort vom Server</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"input_title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Temperatur"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"input_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"data_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DoubleAverage"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"input_title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Luftfeuchtigkeit"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"input_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"data_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DoubleAverage"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+
+<p>Für jeden API Zugang können auch API Eingänge konfiguriert werden. Diese Eingänge können verwendet werden um Daten
+an die LineMetrics Cloud zu schicken. Über die <code class="prettyprint">/v1/data/inputs</code> Schnittstelle können alle verfügbaren API Eingänge
+abgerufen werden.</p>
+
+<h3 id="antwort">Antwort</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Beschreibung</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>input_title</td>
+<td>Name des Eingangs</td>
+</tr>
+<tr>
+<td>input_id</td>
+<td>Eindeutige Kennzeichnung des Eingangs</td>
+</tr>
+<tr>
+<td>data_type</td>
+<td>Datentyp des Eingangs. Dieser definiert auch das Schema der Daten, welches beim Speichern berücksichtigt werden muss.</td>
+</tr>
+</tbody></table>
+
+<h3 id="http-status">HTTP Status</h3>
+
+<table><thead>
+<tr>
+<th>Status</th>
+<th>Beschreibung</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>2*, 3*</td>
+<td>Aufruf erfolgreich</td>
+</tr>
+<tr>
+<td>409</td>
+<td>Es gibt keine Eingänge auf die geschrieben werden kann</td>
+</tr>
+</tbody></table>
+
+<h2 id="daten-schreiben">Daten schreiben</h2>
+
+<blockquote>
+<p>Speichern von Werten</p>
+</blockquote>
+<pre class="highlight shell"><code>curl <span class="s2">"https://lm3api.linemetrics.com/v1/data/write"</span>
+  -H <span class="s2">"Authorization: Bearer {{key}}"</span>
+  -d <span class="s2">"
+  [
+    {
+      "</span>input_id<span class="s2">" : "</span>...<span class="s2">",
+      "</span>data_type<span class="s2">" : "</span>DoubleAverage<span class="s2">",
+      "</span>data_payload<span class="s2">" : {
+        "</span>min<span class="s2">" : 0.234,
+        "</span>val<span class="s2">" : 1.678, 
+        "</span>max<span class="s2">" : 6.890
+      }
+    }
+  ]
+  "</span>
+</code></pre>
+
+<blockquote>
+<p>Antwort vom Server</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"input_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"34f899b4aa60450b89661a07403bd3cf"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"response"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Success"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+
+<p>Zum Speichern von neuen Werten muss eine Liste von Elementen übergeben werden, die jeweils einen zu speichernden
+Messpunkt repräsentieren. Sollten Sie nur einen einzelnen Wert speichern wollen, übergeben Sie bitte eine Liste
+mit nur einem Element.</p>
+
+<p>Sollte der Speichervorgang fehl schlagen, überprüfen Sie bitte den HTTP Status bzw. den Speicherstatus.</p>
+
+<h3 id="parameter">Parameter</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Beschreibung</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>input_id</td>
+<td>ID die den Eingang auf den geschrieben wird, eindeutig identifiert. Die verfügbaren Inputs können mit der API Ressource <code class="prettyprint">Liste mit API Eingängen</code> abgefragt werden.</td>
+</tr>
+<tr>
+<td>data_type</td>
+<td>Definiert den Datentyp des Messpunkts der gespeichert werden soll. Dieser muss mit der Einstellung des Eingangs übereinstimmen.</td>
+</tr>
+<tr>
+<td>data_payload</td>
+<td>Die eigentlichen Daten des Messpunkts. Richtet sich nach dem Datentyp (siehe Abschnitt &ldquo;Daten Typen&rdquo;)</td>
+</tr>
+</tbody></table>
+
+<h3 id="antwort">Antwort</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Beschreibung</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>input_id</td>
+<td>ID die den Eingang auf den geschrieben wurde, eindeutig identifiert.</td>
+</tr>
+<tr>
+<td>response</td>
+<td>Status die definiert, ob ein Wert gespeichert wurde.</td>
+</tr>
+</tbody></table>
+
+<h3 id="speicherstatus">Speicherstatus</h3>
+
+<table><thead>
+<tr>
+<th>Status</th>
+<th>Beschreibung</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>success</td>
+<td>Speichervorgang erfolgreich</td>
+</tr>
+<tr>
+<td>Unknown</td>
+<td>Datentyp entspricht nicht der Einstellung oder Input wurde nicht gefunden</td>
+</tr>
+</tbody></table>
+
+<h3 id="http-status">HTTP Status</h3>
+
+<table><thead>
+<tr>
+<th>Status</th>
+<th>Beschreibung</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>2*, 3*</td>
+<td>Speichervorgang erfolgreich</td>
+</tr>
+<tr>
+<td>400</td>
+<td>Falsche JSON Struktur / Formatierung / Daten fehlen</td>
+</tr>
+<tr>
+<td>409</td>
+<td>Es gibt keine Eingänge auf die geschrieben werden kann</td>
+</tr>
+</tbody></table>
+
+<aside class="success">
+Wichtig: Der aktuelle Zeitstempel wird API seitig automatisch hinzugefügt. Eine Angabe im Request ist aus
+Kompatiblitätsgründen aktuell nicht möglich.
+</aside>
+
+<h2 id="daten-lesen">Daten lesen</h2>
+
+<blockquote>
+<p>Lesen von Werten</p>
+</blockquote>
+<pre class="highlight shell"><code>curl <span class="s2">"https://lm3api.linemetrics.com/v1/data/read"</span>
+  -H <span class="s2">"Authorization: Bearer {{key}}"</span>
+  -d <span class="s2">"
+    {
+      "</span><span class="k">function</span><span class="s2">" : "</span>avg<span class="s2">",
+      "</span>attributes<span class="s2">" : {
+        "</span>object_id<span class="s2">" : "</span><span class="o">{{</span>OBJECT_ID<span class="o">}}</span><span class="s2">",
+        "</span>time_from<span class="s2">" : 1461327519000,
+        "</span>time_to<span class="s2">" : 1461427519000,
+        "</span>time_zone<span class="s2">" : "</span>Europe/Vienna<span class="s2">",
+        "</span>granularity<span class="s2">" : "</span>PT15M<span class="s2">"
+      }
+    }
+  "</span>
+</code></pre>
+
+<blockquote>
+<p>Antwort vom Server</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"average"</span><span class="p">:</span><span class="w"> </span><span class="mf">2.2991219917933146</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"min"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.6733490228652954</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"max"</span><span class="p">:</span><span class="w"> </span><span class="mf">7.464624881744385</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"count"</span><span class="p">:</span><span class="w"> </span><span class="mi">90</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"sum"</span><span class="p">:</span><span class="w"> </span><span class="mf">206.92097926139832</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"ts"</span><span class="p">:</span><span class="w"> </span><span class="mi">1461332700000</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"average"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.6561659008264542</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"min"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.4281260073184967</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"max"</span><span class="p">:</span><span class="w"> </span><span class="mf">4.751817226409912</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"count"</span><span class="p">:</span><span class="w"> </span><span class="mi">90</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"sum"</span><span class="p">:</span><span class="w"> </span><span class="mf">59.054931074380875</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"ts"</span><span class="p">:</span><span class="w"> </span><span class="mi">1461339000000</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"average"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.4405192838774787</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"min"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.1693300008773804</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"max"</span><span class="p">:</span><span class="w"> </span><span class="mf">6.496118068695068</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"count"</span><span class="p">:</span><span class="w"> </span><span class="mi">90</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"sum"</span><span class="p">:</span><span class="w"> </span><span class="mf">129.64673554897308</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"ts"</span><span class="p">:</span><span class="w"> </span><span class="mi">1461357900000</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w"> </span><span class="nt">"..."</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="w"> </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+
+<p>Für das Abfragen von Daten werden sogenannte Funktionen verwendet. Eine Funktion definiert hierbei, wie die Daten
+zurückgegeben werden sollen. Für die Abfrage werden verschiedenste Attribute benötigt (Zeitraum der Abfrage,
+Aggregation, &hellip;) die aber immer Funktionsspezifisch sind. Aus diesem Grund finden Sie im Unterabschnitt Abfragearten
+die unterschiedlichen Funktionen und die benötigten Attribute.</p>
+
+<h3 id="parameter">Parameter</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Beschreibung</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>function</td>
+<td>Die Funktion die verwendet werden soll um Daten abzufragen</td>
+</tr>
+<tr>
+<td>attributes</td>
+<td>Die Funktions spezifischen Attribute die für die Abfrage benötigt werden</td>
+</tr>
+</tbody></table>
+
+<h3 id="antwort">Antwort</h3>
+
+<p>Als Antwort erhalten Sie immer eine JSON Liste mit Datenpunkten. Die Datenpunkte varieren hier nach dem Datentyp. Ein
+jedes Element beinhaltet aber immer einen Zeitstempel.</p>
+
+<h3 id="abfragearten">Abfragearten</h3>
+
+<h4 id="abfrage-von-summen-function-sum">Abfrage von Summen - Function = <code class="prettyprint">sum</code></h4>
+
+<table><thead>
+<tr>
+<th>Attribut</th>
+<th>Optional</th>
+<th>Beschreibung</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>time_from</td>
+<td>Nein</td>
+<td>Abfrage Startzeit als Unixzeitstempel in Millisekunden</td>
+</tr>
+<tr>
+<td>time_to</td>
+<td>Nein</td>
+<td>Abfrage Endzeit als Unixzeitstempel in Millisekunden</td>
+</tr>
+<tr>
+<td>object_id</td>
+<td>Nein</td>
+<td>Eindeutige Kennzeichnung des Streams, der abgefragt werden soll (z.B. input_id). Die verfügbaren Streams können über die Objekt Ressource abgefragt werden.</td>
+</tr>
+<tr>
+<td>time_zone</td>
+<td>Ja</td>
+<td>Zeitzone die für die Aggregation verwendet werden soll</td>
+</tr>
+<tr>
+<td>granularity</td>
+<td>Ja</td>
+<td>Definiert die Größe eines Batches bei der Aggregation. Angabe nach ISO8601</td>
+</tr>
+</tbody></table>
+
+<h4 id="abfrage-von-min-max-avg-function-avg">Abfrage von Min/Max/Avg - Function = <code class="prettyprint">avg</code></h4>
+
+<table><thead>
+<tr>
+<th>Attribut</th>
+<th>Optional</th>
+<th>Beschreibung</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>time_from</td>
+<td>Nein</td>
+<td>Abfrage Startzeit als Unixzeitstempel in Millisekunden</td>
+</tr>
+<tr>
+<td>time_to</td>
+<td>Nein</td>
+<td>Abfrage Endzeit als Unixzeitstempel in Millisekunden</td>
+</tr>
+<tr>
+<td>object_id</td>
+<td>Nein</td>
+<td>Eindeutige Kennzeichnung des Streams, der abgefragt werden soll (z.B. input_id). Die verfügbaren Streams können über die Objekt Ressource abgefragt werden.</td>
+</tr>
+<tr>
+<td>time_zone</td>
+<td>Ja</td>
+<td>Zeitzone die für die Aggregation verwendet werden soll</td>
+</tr>
+<tr>
+<td>granularity</td>
+<td>Ja</td>
+<td>Definiert die Größe eines Batches bei der Aggregation. Angabe nach ISO8601</td>
+</tr>
+</tbody></table>
+
+<h4 id="abfrage-von-rohdaten-function-raw">Abfrage von Rohdaten - Function = <code class="prettyprint">raw</code></h4>
+
+<table><thead>
+<tr>
+<th>Attribut</th>
+<th>Optional</th>
+<th>Beschreibung</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>time_from</td>
+<td>Nein</td>
+<td>Abfrage Startzeit als Unixzeitstempel in Millisekunden</td>
+</tr>
+<tr>
+<td>time_to</td>
+<td>Nein</td>
+<td>Abfrage Endzeit als Unixzeitstempel in Millisekunden</td>
+</tr>
+<tr>
+<td>object_id</td>
+<td>Nein</td>
+<td>Eindeutige Kennzeichnung des Streams, der abgefragt werden soll (z.B. input_id). Die verfügbaren Streams können über die Objekt Ressource abgefragt werden.</td>
+</tr>
+</tbody></table>
+
+<h4 id="standardabfrage-default">Standardabfrage = <code class="prettyprint">default</code></h4>
+
+<p>Um nicht bei jeder Abfrage unterscheiden zu müssen, mit welcher Funktion abgefragt werden soll, gibt es die <code class="prettyprint">default</code> Funktion.
+Für jeden Datentyp ist eine Standard Funktion hinterlegt, die in diesem Fall dann verwendet wird.</p>
+
+<table><thead>
+<tr>
+<th>Attribut</th>
+<th>Optional</th>
+<th>Beschreibung</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>time_from</td>
+<td>Nein</td>
+<td>Abfrage Startzeit als Unixzeitstempel in Millisekunden</td>
+</tr>
+<tr>
+<td>time_to</td>
+<td>Nein</td>
+<td>Abfrage Endzeit als Unixzeitstempel in Millisekunden</td>
+</tr>
+<tr>
+<td>object_id</td>
+<td>Nein</td>
+<td>Eindeutige Kennzeichnung des Streams, der abgefragt werden soll (z.B. input_id). Die verfügbaren Streams können über die Objekt Ressource abgefragt werden.</td>
+</tr>
+<tr>
+<td>time_zone</td>
+<td>Ja</td>
+<td>Zeitzone die für die Aggregation verwendet werden soll</td>
+</tr>
+<tr>
+<td>granularity</td>
+<td>Ja</td>
+<td>Definiert die Größe eines Batches bei der Aggregation. Angabe nach ISO8601</td>
+</tr>
+</tbody></table>
+
+<h3 id="http-status">HTTP Status</h3>
+
+<table><thead>
+<tr>
+<th>Status</th>
+<th>Beschreibung</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>2*, 3*</td>
+<td>Speichervorgang erfolgreich</td>
+</tr>
+<tr>
+<td>403</td>
+<td>Angegebene Funktion wird nicht unterstützt</td>
+</tr>
+<tr>
+<td>404</td>
+<td>Stream der abgefragt wird, existiert nicht</td>
+</tr>
+<tr>
+<td>500</td>
+<td>Fehler beim Abfragen der Stream Daten</td>
+</tr>
+</tbody></table>
+
+<h1 id="objekt-ressourcen">Objekt Ressourcen</h1>
+
+<p>Mit dem LineMetrics Objekt Modell werden verschiedenste Daten in eine strukturierte Form gebracht,
+sodass aus Benutzersicht Zusammenhänge und Relationen zwischen diesen Daten besser hergestellt werden können.</p>
+
+<p>So gibt es beispielweise ein spezielles Objekt Modell, welches nur die verfügbaren Datenquellen eines Accounts darstellt,
+oder ein Objekt Modell, welches Messpunkte (dh Daten die vom Kunden aufgezeichnet werden) so strukturiert, dass es
+einem Kunden möglich ist, alle Messpunkte einer geografischen Einheit (z.B. Filiale) zusammenzufassen.</p>
+
+<p>In einem Objektmodell werden aber nicht nur Messpunkte oder Devices abgelegt. Es werden hier auch Eigenschaften von Objekten
+abgelegt (zB Mitarbeiteranzahl, Raumgröße, &hellip;), die es später ermöglichen, Objekt übergreifende Auswertungen und
+Datenbereinigung durchzuführen (Benchmarking des Energieverbrauchs pro Quadratmeter der einzelnen Filialen).</p>
+
+<h2 id="einzelnes-objekt-abfragen">Einzelnes Objekt abfragen</h2>
+
+<blockquote>
+<p>Objekt abfragen</p>
+</blockquote>
+<pre class="highlight shell"><code>curl <span class="s2">"https://lm3api.linemetrics.com/v1/object/read"</span>
+  -H <span class="s2">"Authorization: Bearer {{key}}"</span>
+  -d <span class="s2">"
+  {
+      "</span>object_id<span class="s2">" : "</span>...<span class="s2">",
+  }
+  "</span>
+</code></pre>
+
+<blockquote>
+<p>Antwort vom Server</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+    </span><span class="nt">"object_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"object_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"object"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"model_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"object"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"template_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"parent_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"payload"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"..."</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="w"> </span><span class="p">}</span><span class="w">    
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>Mit dieser Schnittstelle kann ein einzelnen Objekt anhand seiner eindeutigen ID abgefragt werden.</p>
+
+<h3 id="parameter">Parameter</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Beschreibung</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>object_id</td>
+<td>Die eindeutige ID des Objekts</td>
+</tr>
+</tbody></table>
+
+<h3 id="antwort">Antwort</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Beschreibung</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>object_id</td>
+<td>Die eindeutige ID des Objekts</td>
+</tr>
+<tr>
+<td>object_type</td>
+<td>Typ des Objekts</td>
+</tr>
+<tr>
+<td>model_type</td>
+<td>Model Typ (siehe Einleitungstext Objekt Ressourcen)</td>
+</tr>
+<tr>
+<td>template_id</td>
+<td>Referenz auf ein Template Objekt (Objekt wurde als Instanz eines Templates angelegt)</td>
+</tr>
+<tr>
+<td>parent_id</td>
+<td>Referenz auf das Mutterelement</td>
+</tr>
+<tr>
+<td>payload</td>
+<td>Objekt Typ spezifische Daten</td>
+</tr>
+<tr>
+<td>data</td>
+<td>Wert der Eigenschaft (sofern das Objekt vom Typ &ldquo;property&rdquo; ist</td>
+</tr>
+<tr>
+<td>input</td>
+<td>Referenz auf Datenquelle (sofern eine Verknüpfung existiert)</td>
+</tr>
+<tr>
+<td>children_info</td>
+<td>Key/Value Liste mit Objekt Typ als Schlüssel und Anzahl der Unterobjekte als Wert</td>
+</tr>
+</tbody></table>
+
+<h3 id="http-status">HTTP Status</h3>
+
+<table><thead>
+<tr>
+<th>Status</th>
+<th>Beschreibung</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>2*, 3*</td>
+<td>Abfrage erfolgreich</td>
+</tr>
+<tr>
+<td>400</td>
+<td>Parameter erforderlich</td>
+</tr>
+<tr>
+<td>500</td>
+<td>Fehler beim Verarbeiten der Abfrage</td>
+</tr>
+</tbody></table>
+
+<h2 id="liste-von-kinder-objekte-abfragen">Liste von Kinder Objekte abfragen</h2>
+
+<blockquote>
+<p>Kinder Objekte abfragen</p>
+</blockquote>
+<pre class="highlight shell"><code>curl <span class="s2">"https://lm3api.linemetrics.com/v1/object/children"</span>
+  -H <span class="s2">"Authorization: Bearer {{key}}"</span>
+  -d <span class="s2">"
+  {
+      "</span>object_id<span class="s2">" : "</span>...<span class="s2">",
+      "</span>limit<span class="s2">" : 100,
+      "</span>offset<span class="s2">" : 0
+  }
+  "</span>
+</code></pre>
+
+<blockquote>
+<p>Antwort vom Server</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"object_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"object_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"object"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"model_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"object"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"template_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"parent_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"payload"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"..."</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="w"> </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w"> </span><span class="nt">"..."</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="w"> </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+
+<p>Mit dieser Schnittstelle ist es möglich, alle Kinder Objekte eines Objekts abzufragen.</p>
+
+<h3 id="parameter">Parameter</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Optional</th>
+<th>Beschreibung</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>object_id</td>
+<td>Ja</td>
+<td>Die eindeutige ID des Mutter Objekts</td>
+</tr>
+<tr>
+<td>model_type</td>
+<td>Ja</td>
+<td>Objekt Modell das abgefragt werden soll</td>
+</tr>
+<tr>
+<td>limit</td>
+<td>Ja</td>
+<td>Anzahl der Objekte die geladen werden sollen</td>
+</tr>
+<tr>
+<td>offset</td>
+<td>Ja</td>
+<td>Anzahl der Objekte die übersprungen werden sollen</td>
+</tr>
+<tr>
+<td>object_type</td>
+<td>Ja</td>
+<td>Objekt Typen die geladen werden sollen (String und Liste von Typen möglich)</td>
+</tr>
+</tbody></table>
+
+<aside class="success">
+Mutter Objekt wird in der Ergebnismenge nicht mitgeliefert!
+</aside>
+
+<aside class="success">
+Zum Laden der ersten Ebene der Objekte, KEINE object_id übergeben.
+</aside>
+
+<h3 id="antwort">Antwort</h3>
+
+<p>Liste von Objekten</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Beschreibung</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>object_id</td>
+<td>Die eindeutige ID des Objekts</td>
+</tr>
+<tr>
+<td>object_type</td>
+<td>Typ des Objekts</td>
+</tr>
+<tr>
+<td>model_type</td>
+<td>Model Typ (siehe Einleitungstext Objekt Ressourcen)</td>
+</tr>
+<tr>
+<td>template_id</td>
+<td>Referenz auf ein Template Objekt (Objekt wurde als Instanz eines Templates angelegt)</td>
+</tr>
+<tr>
+<td>parent_id</td>
+<td>Referenz auf das Mutterelement</td>
+</tr>
+<tr>
+<td>payload</td>
+<td>Objekt Typ spezifische Daten</td>
+</tr>
+</tbody></table>
+
+<h3 id="http-status">HTTP Status</h3>
+
+<table><thead>
+<tr>
+<th>Status</th>
+<th>Beschreibung</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>2*, 3*</td>
+<td>Abfrage erfolgreich</td>
+</tr>
+<tr>
+<td>400</td>
+<td>Parameter erforderlich</td>
+</tr>
+</tbody></table>
+
+      </div>
+      <div class="dark-box">
+          <div class="lang-selector">
+                <a href="#" data-language-name="shell">shell</a>
+          </div>
+      </div>
+    </div>
+  </body>
+</html>

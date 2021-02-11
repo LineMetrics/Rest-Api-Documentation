@@ -1,0 +1,2267 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>LineMetrics API (v2) Referenz</title>
+
+    <style>
+      .highlight table td { padding: 5px; }
+.highlight table pre { margin: 0; }
+.highlight, .highlight .w {
+  color: #f8f8f2;
+  background-color: #272822;
+}
+.highlight .err {
+  color: #151515;
+  background-color: #ac4142;
+}
+.highlight .c, .highlight .cd, .highlight .cm, .highlight .c1, .highlight .cs {
+  color: #505050;
+}
+.highlight .cp {
+  color: #f4bf75;
+}
+.highlight .nt {
+  color: #f4bf75;
+}
+.highlight .o, .highlight .ow {
+  color: #d0d0d0;
+}
+.highlight .p, .highlight .pi {
+  color: #d0d0d0;
+}
+.highlight .gi {
+  color: #90a959;
+}
+.highlight .gd {
+  color: #ac4142;
+}
+.highlight .gh {
+  color: #6a9fb5;
+  background-color: #151515;
+  font-weight: bold;
+}
+.highlight .k, .highlight .kn, .highlight .kp, .highlight .kr, .highlight .kv {
+  color: #aa759f;
+}
+.highlight .kc {
+  color: #d28445;
+}
+.highlight .kt {
+  color: #d28445;
+}
+.highlight .kd {
+  color: #d28445;
+}
+.highlight .s, .highlight .sb, .highlight .sc, .highlight .sd, .highlight .s2, .highlight .sh, .highlight .sx, .highlight .s1 {
+  color: #90a959;
+}
+.highlight .sr {
+  color: #75b5aa;
+}
+.highlight .si {
+  color: #8f5536;
+}
+.highlight .se {
+  color: #8f5536;
+}
+.highlight .nn {
+  color: #f4bf75;
+}
+.highlight .nc {
+  color: #f4bf75;
+}
+.highlight .no {
+  color: #f4bf75;
+}
+.highlight .na {
+  color: #6a9fb5;
+}
+.highlight .m, .highlight .mf, .highlight .mh, .highlight .mi, .highlight .il, .highlight .mo, .highlight .mb, .highlight .mx {
+  color: #90a959;
+}
+.highlight .ss {
+  color: #90a959;
+}
+    </style>
+    <link href="stylesheets/screen.css" rel="stylesheet" media="screen" />
+    <link href="stylesheets/print.css" rel="stylesheet" media="print" />
+      <script src="javascripts/all.js"></script>
+  </head>
+
+  <body class="english" data-languages="[&quot;shell&quot;]">
+    <a href="#" id="nav-button">
+      <span>
+        NAV
+        <img src="images/navbar.png" />
+      </span>
+    </a>
+    <div class="tocify-wrapper">
+      <img src="images/logo.png" />
+        <div class="lang-selector">
+              <a href="#" data-language-name="shell">shell</a>
+        </div>
+        <div class="search">
+          <input type="text" class="search" id="input-search" placeholder="Search">
+        </div>
+        <ul class="search-results"></ul>
+      <div id="toc">
+      </div>
+        <ul class="toc-footer">
+            <li><a href='https://lm3.linemetrics.com'>LineMetrics App</a></li>
+            <li><a href='/v2/'><img src="images/de.png"> Deutsche Dokumentation</a></li>
+        </ul>
+    </div>
+    <div class="page-wrapper">
+      <div class="dark-box"></div>
+      <div class="content">
+        <h1 id="linemetrics-api-v2">LineMetrics API (v2)</h1>
+
+<p>Welcome to the LineMetrics REST API documentation. The LineMetrics API will enable you to access the basic functions of the LineMetrics Cloud. These include, among others, query of existing <code class="prettyprint">streams</code> and saving of data in a configured datastream.</p>
+
+<p>Currently, trial sample codes are only available for the Unix-command line (Shell). Step by step we plan to expand the availability of our trial sample codes to other programing languages. Your cooperation in this regard will be highly appreciated.</p>
+
+<p>The current version of the API is version 2, whereas it has to be mentioned that the current version is still in development. However, existing endpoints should not be changed anymore and further endpoints will be continuously added. The versioning shall allow to create a seamless adaptation of existing endpoints, without influencing the downward compatibility.</p>
+
+<h1 id="authentication">Authentication</h1>
+
+<p>The current version of the REST API documentation supports an authentication using client-credentials and password-grant via the OAuth2 protocol. Therefore, a session token has to be created via a REST call and the authentication-dependent parameters. Using this session token, you can query other resources (data/objects/resources).</p>
+
+<h2 id="oauth2-client-credentials">OAuth2 (Client Credentials)</h2>
+
+<blockquote>
+<p>Authentication via OAuth &amp; Client-Credentials</p>
+</blockquote>
+<pre class="highlight shell"><code>curl <span class="s2">"https://lm3api.linemetrics.com/oauth/access_token"</span>
+  -d <span class="s1">'client_id={{CLIENT_ID}}&amp;grant_type=client_credentials&amp;client_secret={{CLIENT_SECRET}}'</span>
+  -X POST
+</code></pre>
+
+<blockquote>
+<p>Response from server</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+    </span><span class="nt">"access_token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"{{key}}"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"token_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Bearer"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"expires_in"</span><span class="p">:</span><span class="w"> </span><span class="mi">3600</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>Client Credentials is a type of authentication that should commonly be used. Client Credentials enables the access to all data of the account using the authentication via the parameter <code class="prettyprint">Client ID</code> and <code class="prettyprint">Client Secret</code>.</p>
+
+<h3 id="parameter">Parameter</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>client_id</td>
+<td>ID that clearly identifies the access.</td>
+</tr>
+<tr>
+<td>client_secret</td>
+<td>Client secret, which authorizes the access via Client ID and allows to create a new session token.</td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>access_token</td>
+<td>Session token used for queries on API resources and transferred via header.</td>
+</tr>
+<tr>
+<td>token_type</td>
+<td>Defines the type of session token and is indicated as a prefix in the header.</td>
+</tr>
+<tr>
+<td>expires_in</td>
+<td>Time until expiration in seconds</td>
+</tr>
+</tbody></table>
+
+<h2 id="oauth2-password-grant">OAuth2 (Password grant)</h2>
+
+<blockquote>
+<p>Authentication via OAuth &amp; Passwort-Grant</p>
+</blockquote>
+<pre class="highlight shell"><code>curl <span class="s2">"https://lm3api.linemetrics.com/oauth/access_token"</span>
+  -d <span class="s1">'client_id={{CLIENT_ID}}&amp;grant_type=password&amp; // KEIN ZEILENUMBRUCH
+      client_secret={{CLIENT_SECRET}}&amp;email={{EMAIL}}&amp;password={{PASSWORD}}'</span>
+  -X POST
+</code></pre>
+
+<blockquote>
+<p>Response from server</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+    </span><span class="nt">"access_token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"{{key}}"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"token_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Bearer"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"expires_in"</span><span class="p">:</span><span class="w"> </span><span class="mi">3600</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>For the password grant the authentication is done through the parameter <code class="prettyprint">Client ID</code> and <code class="prettyprint">Client Secret</code>, as usual. Additionally, the parameter <code class="prettyprint">E-Mail</code> and <code class="prettyprint">Password</code> must be transmitted. Consequently, a token will be generated, which is valid only for this account. For this type of authentication you have to apply at <a href="mailto:support@linemetrics.com">support@linemetrics.com</a></p>
+
+<aside class="warning">
+Important: Currently the password grant only supports read operations, but no write operations.
+</aside>
+
+<h3 id="parameter">Parameter</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>client_id</td>
+<td>ID that clearly identifies the access</td>
+</tr>
+<tr>
+<td>client_secret</td>
+<td>Client secret, which authorizes the access via Client ID and allows to create a new session token</td>
+</tr>
+<tr>
+<td>email</td>
+<td>E-mail of the user, who wants to be authorized</td>
+</tr>
+<tr>
+<td>password</td>
+<td>Password of the user, who wants to be authorized</td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>access_token</td>
+<td>Session token used for request on API resources and transferred via header.</td>
+</tr>
+<tr>
+<td>token_type</td>
+<td>Defines the type of session token and is indicated as a prefix in the header.</td>
+</tr>
+<tr>
+<td>expires_in</td>
+<td>Time until expiration in seconds</td>
+</tr>
+</tbody></table>
+
+<h1 id="datatypes">Datatypes</h1>
+
+<p>Data types are an essential part when working with data within the LineMetrics Cloud or when working with the REST API, because through data types it can determined, how the particular data should look like and which characteristics a single data point should have.</p>
+
+<p>You obtain data types when querying Inputs available for the API endpoint, or when querying specific datastream of an object.</p>
+
+<h2 id="double">Double</h2>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"val"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mf">123.0</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>Simple datatype, that only encapsulates a primitive <code class="prettyprint">double</code> datatype.</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Prim. Datentype</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>val</td>
+<td>Double</td>
+<td>value</td>
+</tr>
+</tbody></table>
+
+<h2 id="doubleaverage">DoubleAverage</h2>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"val"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mf">123.3</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"min"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mf">10.0</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"max"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mf">456.12</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>Datatype that delivers the average value as well as thresholds (min/max)</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Prim. Datatype</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>val</td>
+<td>Double</td>
+<td>average</td>
+</tr>
+<tr>
+<td>min</td>
+<td>Double</td>
+<td>minimum value</td>
+</tr>
+<tr>
+<td>max</td>
+<td>Double</td>
+<td>maximum value</td>
+</tr>
+</tbody></table>
+
+<h2 id="bool">Bool</h2>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"val"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>Simple datatype, that only encapsulates a primitive <code class="prettyprint">bool</code> datatype.</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Prim. Datatyp</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>val</td>
+<td>Boolean</td>
+<td>Boolean value 0 or 1</td>
+</tr>
+</tbody></table>
+
+<h2 id="geocoord">GeoCoord</h2>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"lat"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mf">48.20863000</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"long"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mf">16.39741000</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>Datatype, that encapsulates geo-coordinates in form of a longitudinal and a latitudinal value.</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Prim. Datatyp</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>lat</td>
+<td>Double</td>
+<td>Latitudinal GPS value (geographic latitude)</td>
+</tr>
+<tr>
+<td>long</td>
+<td>Double</td>
+<td>Longitudinal GPS value (geographic longitude)</td>
+</tr>
+</tbody></table>
+
+<h2 id="string">String</h2>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"val"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"my text"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>Simple datatype, that only encapsulates a primitive <code class="prettyprint">String</code> datatype.</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Prim. Datatyp</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>val</td>
+<td>String</td>
+<td>text</td>
+</tr>
+</tbody></table>
+
+<h2 id="timestamp">Timestamp</h2>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"val"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1325376000000</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>Datatype, that encapsulates a <code class="prettyprint">Long</code> datatype and shows a UTC-timestamp/date within milliseconds.</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Prim. Datatyp</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>val</td>
+<td>Long</td>
+<td>UTC timestamp in milliseconds</td>
+</tr>
+</tbody></table>
+
+<h2 id="table">Table</h2>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"val"</span><span class="w"> </span><span class="p">:</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"column1"</span><span class="w"> </span><span class="p">:</span><span class="w">
+      </span><span class="p">{</span><span class="w"> 
+        </span><span class="nt">"val"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Order 96"</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nt">"column2"</span><span class="w"> </span><span class="p">:</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"val"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1464608700000</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nt">"column3"</span><span class="w"> </span><span class="p">:</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"lat"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mf">1.5877383</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"long"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mf">2.0317383</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nt">"column4"</span><span class="w"> </span><span class="p">:</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"val"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>The datatype Table encapsulates a complex data type that is presented as &ldquo;table&rdquo; inside
+our web application. For this purpose, the user has to define columns inside the application.
+These columns have a data type that differs from the ones listed above, and a key.
+The key is used when writing values (e.g. with the API) to uniquely address the individual column values.</p>
+
+<p>For the example, a new measuring point &ldquo;table&rdquo; was created in the application. At the measuring point page
+a column &ldquo;order number&rdquo; was created, with a columny key <code class="prettyprint">column1</code>, and data type &lsquo;String&rsquo;, etc.</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Prim. Datatyp</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>val</td>
+<td>JSON</td>
+<td>Complex data type that holds one or more data types that mentioned above.</td>
+</tr>
+</tbody></table>
+
+<h1 id="addressing">Addressing</h1>
+
+<p>The LineMetrics API provides different options to access data or assets and their related datastream/characteristics. In the following section these options will be further explained.</p>
+
+<h2 id="asset">Asset</h2>
+
+<p>An asset is a container that encapsulates datastream/characteristics. An asset depicts a real physical object (e.g. a machine, a building, etc). An asset can always be addressed using an UID (see below). Additionally, it is possible to provide a <code class="prettyprint">Custom Key</code> for the asset. The custom key is freely selectable, but has to be distinct within the account.</p>
+
+<h2 id="datastream-property">Datastream/Property</h2>
+
+<p>A datastream/property is the occurrence of an asset and illustrates the current state (as a value or as time series) or the property of an asset (e.g. how big is my building?) This type of information can be directly addressed using an UID - like an asset. Simultaneously, there is the possibility to deposit a so-called <code class="prettyprint">Alias</code>. This is also freely selectable and has to be distinct within the account. Using <code class="prettyprint">Custom Key</code> and <code class="prettyprint">Alias</code> users can query for data in the following way: <code class="prettyprint">Machine1</code>.<code class="prettyprint">Occupancy rate</code> -&gt; show me the occupancy rate of machine 1</p>
+
+<h2 id="uid">UID</h2>
+
+<p>An UID is a construct of 32 consecutive characters and numbers and represents a distinct ID. Nearly every function enable the addressing of a resource via the UID.</p>
+
+<h1 id="data-resources">Data resources</h1>
+
+<h2 id="query-datatype">Query datatype</h2>
+
+<blockquote>
+<p>Query datatype</p>
+</blockquote>
+<pre class="highlight shell"><code>curl <span class="s2">"https://lm3api.linemetrics.com/v2/data/{{CUSTOM_KEY}}/{{ALIAS}}/config"</span>
+  -H <span class="s2">"Authorization: Bearer {{KEY}}"</span>
+</code></pre>
+
+<blockquote>
+<p>Response from server</p>
+</blockquote>
+<pre class="highlight json"><code><span class="w">  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"input"</span><span class="p">:</span><span class="w"> </span><span class="s2">"{{DATATYPE}}"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"output"</span><span class="p">:</span><span class="w"> </span><span class="s2">"{{DATATYPE}}"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>If data should be written on a datastream/property or if data should be read from them, it is necessary to include your own experience in regards to which datatype is used.</p>
+
+<p>This can be determined by using the following commands.</p>
+
+<h3 id="parameter">Parameter</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>custom_key</td>
+<td>Addressing of assets <a href="#asset">Definition</a></td>
+</tr>
+<tr>
+<td>alias</td>
+<td>Addressing of datastream/property  <a href="#datastream-property">Definition</a></td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>input</td>
+<td>Datatype, that must be used for writing</td>
+</tr>
+<tr>
+<td>output</td>
+<td>Datatype, that is transmitted when reading</td>
+</tr>
+</tbody></table>
+
+<h2 id="write-data">Write data</h2>
+
+<blockquote>
+<p>Saving of values</p>
+</blockquote>
+<pre class="highlight shell"><code>curl <span class="s2">"https://lm3api.linemetrics.com/v2/data/{{CUSTOM_KEY}}/{{ALIAS}}"</span>
+  -X POST
+  -H <span class="s2">"Authorization: Bearer {{KEY}}"</span>
+  -d <span class="s2">"
+  [
+      {
+        "</span>min<span class="s2">" : 0.234,
+        "</span>val<span class="s2">" : 1.678,
+        "</span>max<span class="s2">" : 6.890
+      }
+  ]
+  "</span>
+</code></pre>
+
+<blockquote>
+<p>Response from server</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"response"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Success"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+
+<p>In order to save new values, a list of elements has to be transferred which represents one datastream at a time that you want to save. If you only want to save a single value, you will transfer a list with a single element.
+If the saving process fails, please check the HTTP status and the saving status.</p>
+
+<aside class="warning">
+ Important: A successful saving process does not mean that the underlying value has been processed. A positive response only means, that the command has been received. If you want to query the values straight after saving, it might not be shown, because the processing in the background happens asynchronously.
+</aside>
+
+<h3 id="parameter">Parameter</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>custom_key</td>
+<td>Addressing of the assets <a href="#addressing">Definition</a></td>
+</tr>
+<tr>
+<td>alias</td>
+<td>Addressing of the datastream/property <a href="#addressing">Definition</a></td>
+</tr>
+<tr>
+<td>data_payload</td>
+<td>The actual data of the datastream. Dependent from the datatype <a href="#datatypes">Definition</a></td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>response</td>
+<td>Status, that determines whether a value was saved.</td>
+</tr>
+</tbody></table>
+
+<h3 id="http-status">HTTP Status</h3>
+
+<table><thead>
+<tr>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>2*, 3*</td>
+<td>Saving process successful</td>
+</tr>
+<tr>
+<td>400</td>
+<td>Wrong JSON structure/ formatting / missing data</td>
+</tr>
+<tr>
+<td>500</td>
+<td>Internal error while saving. Please mail to <a href="mailto:support@linemetrics.com">support@linemetrics.com</a></td>
+</tr>
+</tbody></table>
+
+<aside class="success">
+Important: The actual timestamp is usually added automatically on the API side. Optionally, a UTC timestamp can be added for each datatype in milliseconds using `ts`.
+
+</aside>
+
+<blockquote>
+<p>Saving of data(Key - Value)</p>
+</blockquote>
+<pre class="highlight shell"><code>curl <span class="s2">"https://lm3api.linemetrics.com/v2/data/{{CUSTOM_KEY}}/{{ALIAS}}"</span>
+  -X POST
+  -H <span class="s2">"Authorization: Bearer {{KEY}}"</span>
+  -d <span class="s2">"
+  {
+      "</span>custom_key<span class="s2">" : {
+        "</span>min<span class="s2">" : 0.234,
+        "</span>val<span class="s2">" : 1.678,
+        "</span>max<span class="s2">" : 6.890
+      }
+  }
+  "</span>
+</code></pre>
+
+<blockquote>
+<p>Response from server</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"custom key"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"response"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Success"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<aside class="success">
+If multiple values should be written, the list can also be transferred as a key-value map. Thus, the status code from the response is clearly addressable.
+</aside>
+
+<h2 id="read-data-last-value">Read data (last value)</h2>
+
+<blockquote>
+<p>reading of data</p>
+</blockquote>
+<pre class="highlight shell"><code>curl <span class="s2">"https://lm3api.linemetrics.com/v2/data/{{CUSTOM_KEY}}/{{ALIAS}}?function=last_value"</span>
+  -H <span class="s2">"Authorization: Bearer {{key}}"</span>
+</code></pre>
+
+<blockquote>
+<p>Response from server</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"min"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mf">0.234</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"val"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mf">1.678</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"max"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mf">6.890</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+
+<p>To read the last value, a predefined function <code class="prettyprint">last_value</code> is used. A function determines how the data is returned.</p>
+
+<h3 id="parameter">Parameter</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>custom_key</td>
+<td>Addressing of the asset <a href="#addressing">Definition</a></td>
+</tr>
+<tr>
+<td>alias</td>
+<td>Addressing of the datastream/property <a href="#addressing">Definition</a></td>
+</tr>
+<tr>
+<td>function</td>
+<td>Function that is used to query data (in this case the function that returns the last value)</td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<p>As a response, you will always receive a JSON list of data points. The data points vary depending on the datatype. However, each element includes a timestamp.</p>
+
+<h2 id="read-data">Read data</h2>
+
+<blockquote>
+<p>Reading of values</p>
+</blockquote>
+<pre class="highlight shell"><code>curl <span class="s2">"https://lm3api.linemetrics.com/v2/data/{{CUSTOM_KEY}}/{{ALIAS}}? ... PARAMETER ... "</span>
+  -H <span class="s2">"Authorization: Bearer {{key}}"</span>
+</code></pre>
+
+<blockquote>
+<p>Response from server</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"average"</span><span class="p">:</span><span class="w"> </span><span class="mf">2.2991219917933146</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"min"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.6733490228652954</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"max"</span><span class="p">:</span><span class="w"> </span><span class="mf">7.464624881744385</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"count"</span><span class="p">:</span><span class="w"> </span><span class="mi">90</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"sum"</span><span class="p">:</span><span class="w"> </span><span class="mf">206.92097926139832</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"ts"</span><span class="p">:</span><span class="w"> </span><span class="mi">1461332700000</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"average"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.6561659008264542</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"min"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.4281260073184967</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"max"</span><span class="p">:</span><span class="w"> </span><span class="mf">4.751817226409912</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"count"</span><span class="p">:</span><span class="w"> </span><span class="mi">90</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"sum"</span><span class="p">:</span><span class="w"> </span><span class="mf">59.054931074380875</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"ts"</span><span class="p">:</span><span class="w"> </span><span class="mi">1461339000000</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"average"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.4405192838774787</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"min"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.1693300008773804</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"max"</span><span class="p">:</span><span class="w"> </span><span class="mf">6.496118068695068</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"count"</span><span class="p">:</span><span class="w"> </span><span class="mi">90</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"sum"</span><span class="p">:</span><span class="w"> </span><span class="mf">129.64673554897308</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"ts"</span><span class="p">:</span><span class="w"> </span><span class="mi">1461357900000</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w"> </span><span class="nt">"..."</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="w"> </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+
+<p>To query data, so-called functions are used. One function determines, how the data is returned. To query the data certain attributes (period, aggregation, etc) are needed and can vary from function to function. Therefore, you can find all different functions and the corresponding attributes in the subsection query types .</p>
+
+<h3 id="parameter">Parameter</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>function</td>
+<td>function that should be used to query data</td>
+</tr>
+<tr>
+<td>attributes</td>
+<td>attributes corresponding to the function that is used to query data</td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<p>As a response, you will always receive a JSON list of data points. The data points vary depending on the datatype. However, each element includes a timestamp.</p>
+
+<h3 id="query-types">Query types</h3>
+
+<h4 id="query-of-sum-function-sum">Query of sum - function = <code class="prettyprint">sum</code></h4>
+
+<table><thead>
+<tr>
+<th>Attribute</th>
+<th>Optional</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>time_from</td>
+<td>No</td>
+<td>Query of starting time as UNIX timestamp in milliseconds</td>
+</tr>
+<tr>
+<td>time_to</td>
+<td>No</td>
+<td>Query of end time as UNIX timestamp in milliseconds</td>
+</tr>
+<tr>
+<td>time_zone</td>
+<td>Yes</td>
+<td>Time zone that should be used for aggregation</td>
+</tr>
+<tr>
+<td>granularity</td>
+<td>Yes</td>
+<td>Determines the size of the batch during aggregation. Information in accordance to ISO8601</td>
+</tr>
+</tbody></table>
+
+<h4 id="query-of-min-max-avg-function-average">Query of Min/Max/Avg - function = <code class="prettyprint">average</code></h4>
+
+<table><thead>
+<tr>
+<th>Attribute</th>
+<th>Optional</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>time_from</td>
+<td>No</td>
+<td>Query of starting time as UNIX time stamp in milliseconds</td>
+</tr>
+<tr>
+<td>time_to</td>
+<td>No</td>
+<td>Query of end time as UNIX time stamp in milliseconds</td>
+</tr>
+<tr>
+<td>time_zone</td>
+<td>Yes</td>
+<td>Time zone that should be used for aggregation</td>
+</tr>
+<tr>
+<td>granularity</td>
+<td>Yes</td>
+<td>Determines the size of the batch during aggregation. Information in accordance to ISO8601</td>
+</tr>
+</tbody></table>
+
+<h4 id="query-of-raw-data-function-raw">Query of raw-data-function = <code class="prettyprint">raw</code></h4>
+
+<table><thead>
+<tr>
+<th>Attribute</th>
+<th>Optional</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>time_from</td>
+<td>No</td>
+<td>Query of starting time as UNIX time stamp in milliseconds</td>
+</tr>
+<tr>
+<td>time_to</td>
+<td>No</td>
+<td>Query of end time as UNIX time stamp in milliseconds</td>
+</tr>
+</tbody></table>
+
+<h4 id="standard-query-default">Standard query = <code class="prettyprint">default</code></h4>
+
+<p>In order to not distinguish which function to use for each query, the function <code class="prettyprint">default</code> is available. For each datatype, a standard function exists, that will be used in this case. If no function is used, the function <code class="prettyprint">default</code> will automatically be used.</p>
+
+<table><thead>
+<tr>
+<th>Attribute</th>
+<th>Optional</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>time_from</td>
+<td>No</td>
+<td>Query of starting time as UNIX time stamp in milliseconds</td>
+</tr>
+<tr>
+<td>time_to</td>
+<td>No</td>
+<td>Query of end time as UNIX time stamp in milliseconds</td>
+</tr>
+<tr>
+<td>time_zone</td>
+<td>Yes</td>
+<td>Time zone that should be used for aggregation</td>
+</tr>
+<tr>
+<td>granularity</td>
+<td>Yes</td>
+<td>Determines the size of the batch during aggregation. Information in accordance to ISO8601</td>
+</tr>
+</tbody></table>
+
+<h3 id="http-status">HTTP Status</h3>
+
+<table><thead>
+<tr>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>2*, 3*</td>
+<td>Saving process successful</td>
+</tr>
+<tr>
+<td>403</td>
+<td>Referred function is not supported</td>
+</tr>
+<tr>
+<td>404</td>
+<td>Queried stream does not exist</td>
+</tr>
+<tr>
+<td>500</td>
+<td>Error while querying stream. Please mail to <a href="mailto:support@linemetrics.com">support@linemetrics.com</a></td>
+</tr>
+</tbody></table>
+
+<h1 id="object-resources">Object resources</h1>
+
+<p>The LineMetrics asset model organizes all different kind of data in a structured format, so that links and relations between data can be found more easily from the user&rsquo;s point of view. A more specific explanation can be found in the section <a href="#addressing">Addressing</a>.</p>
+
+<h2 id="query-a-single-resource">Query a single resource</h2>
+
+<blockquote>
+<p>Query objects</p>
+</blockquote>
+<pre class="highlight shell"><code>curl <span class="s2">"https://lm3api.linemetrics.com/v2/object/{{CUSTOM_KEY}}/{{ALIAS}}?last_value=true"</span>
+  -H <span class="s2">"Authorization: Bearer {{key}}"</span>
+</code></pre>
+
+<blockquote>
+<p>Response from server</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+    </span><span class="nt">"object_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"object_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"object"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"model_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"object"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"template_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"parent_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"payload"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"..."</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="w"> </span><span class="p">}</span><span class="w">   
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>Using this interface, a single resource can be queried.</p>
+
+<h3 id="parameter">Parameter</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Optional</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>custom_key</td>
+<td>No</td>
+<td>Addressing of the asset <a href="#addressing">Definition</a></td>
+</tr>
+<tr>
+<td>alias</td>
+<td>Yes</td>
+<td>Addressing of the datastream/property <a href="#addressing">Definition</a></td>
+</tr>
+<tr>
+<td>last_value</td>
+<td>Yes</td>
+<td>Should last value be queried(true/false)</td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>object_id</td>
+<td>The distinct ID of the object</td>
+</tr>
+<tr>
+<td>object_type</td>
+<td>Type of resource</td>
+</tr>
+<tr>
+<td>template_id</td>
+<td>Reference to a template (resource was created as an instance of a template)</td>
+</tr>
+<tr>
+<td>parent_id</td>
+<td>Reference to the parent-element</td>
+</tr>
+<tr>
+<td>payload</td>
+<td>resource-specific data</td>
+</tr>
+<tr>
+<td>data</td>
+<td>Value of the property (if the resource is of type property)</td>
+</tr>
+<tr>
+<td>input</td>
+<td>Reference to data source (if a linkage does exist)</td>
+</tr>
+<tr>
+<td>children_info</td>
+<td>Key/value list with object type as key and number of sub-objects as value</td>
+</tr>
+<tr>
+<td>custom_key</td>
+<td>Custom key (if the resource is an asset and the value has been defined)</td>
+</tr>
+<tr>
+<td>alias</td>
+<td>Alias (if the resource is a datastream/property and the value has been defined)</td>
+</tr>
+<tr>
+<td>last_value</td>
+<td>last value of a datastream</td>
+</tr>
+</tbody></table>
+
+<h3 id="http-status">HTTP Status</h3>
+
+<table><thead>
+<tr>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>2*, 3*</td>
+<td>Query successful</td>
+</tr>
+<tr>
+<td>400</td>
+<td>Parameter necessary</td>
+</tr>
+<tr>
+<td>500</td>
+<td>Error while processing the query. Please mail to <a href="mailto:support@linemetrics.com">support@linemetrics.com</a></td>
+</tr>
+</tbody></table>
+
+<h2 id="query-list-of-children-of-a-resource">Query list of children of a resource</h2>
+
+<blockquote>
+<p>Query resources children</p>
+</blockquote>
+<pre class="highlight shell"><code>curl <span class="s2">"https://lm3api.linemetrics.com/v2/children/{{CUSTOM_KEY}}/{{ALIAS}}? ... PARAMETER ..."</span>
+  -H <span class="s2">"Authorization: Bearer {{key}}"</span>
+</code></pre>
+
+<blockquote>
+<p>Response from server</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"object_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"object_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"object"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"model_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"object"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"template_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"parent_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"payload"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"..."</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="w"> </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w"> </span><span class="nt">"..."</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="w"> </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+
+<p>Using this interface, all children of a resource can be queried.</p>
+
+<h3 id="parameter">Parameter</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Optional</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>custom_key</td>
+<td>Yes</td>
+<td>Addressing of the asset <a href="#addressing">Definition</a></td>
+</tr>
+<tr>
+<td>alias</td>
+<td>Yes</td>
+<td>Addressing of the datastream/property <a href="#addressing">Definition</a></td>
+</tr>
+<tr>
+<td>limit</td>
+<td>Yes</td>
+<td>Number of objects that should be loaded</td>
+</tr>
+<tr>
+<td>offset</td>
+<td>Yes</td>
+<td>Number of objects that should be skipped</td>
+</tr>
+<tr>
+<td>object_type</td>
+<td>Yes</td>
+<td>Type of objects that should be loaded (string and list of types possible)</td>
+</tr>
+<tr>
+<td>load_property_data</td>
+<td>Yes</td>
+<td>Load value - if it is a property</td>
+</tr>
+<tr>
+<td>load_input_ref</td>
+<td>Yes</td>
+<td>Load UID of the stream, which contains the actual data of the resource</td>
+</tr>
+</tbody></table>
+
+<aside class="success">
+Parent object will not be included in the query output!
+</aside>
+
+<aside class="success">
+To load the first level of objects, do not include acustom_key übergeben.
+</aside>
+
+<h3 id="response">Response</h3>
+
+<p>List of objects</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>object_id</td>
+<td>The distinct ID of the object</td>
+</tr>
+<tr>
+<td>object_type</td>
+<td>Type of resource</td>
+</tr>
+<tr>
+<td>template_id</td>
+<td>Reference to a template (resource was created as an instance of a template)</td>
+</tr>
+<tr>
+<td>parent_id</td>
+<td>Reference to the parent-element</td>
+</tr>
+<tr>
+<td>payload</td>
+<td>Resources of specific data</td>
+</tr>
+<tr>
+<td>data</td>
+<td>Value of the property (if the resource is of type property)</td>
+</tr>
+<tr>
+<td>input</td>
+<td>Reference to data source (if a linkage does exist)</td>
+</tr>
+<tr>
+<td>children_info</td>
+<td>Key/value list with object type as key and number of sub-objects as value</td>
+</tr>
+<tr>
+<td>custom_key</td>
+<td>Custom key (if the resource is an asset and the value has been defined)</td>
+</tr>
+<tr>
+<td>alias</td>
+<td>Alias (if the resource is a datastream/property and the value has been defined)</td>
+</tr>
+</tbody></table>
+
+<h3 id="http-status">HTTP Status</h3>
+
+<table><thead>
+<tr>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>2*, 3*</td>
+<td>Successful query</td>
+</tr>
+<tr>
+<td>400</td>
+<td>Parameter necessary</td>
+</tr>
+<tr>
+<td>500</td>
+<td>Error when processing the query. Please mail to <a href="mailto:support@linemetrics.com">support@linemetrics.com</a></td>
+</tr>
+</tbody></table>
+
+<h2 id="delete-a-resource">Delete a resource</h2>
+
+<blockquote>
+<p>Delete a resource</p>
+</blockquote>
+<pre class="highlight shell"><code>curl <span class="s2">"https://lm3api.linemetrics.com/v2/object/{{CUSTOM_KEY}}/{{ALIAS}}? ... PARAMETER ..."</span>
+  -X DELETE
+  -H <span class="s2">"Authorization: Bearer {{key}}"</span>
+</code></pre>
+
+<p>Using this interface, a resource (and its children) can be deleted.</p>
+
+<h3 id="parameter">Parameter</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Optional</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>custom_key</td>
+<td>No</td>
+<td>Addressing of the asset <a href="#addressing">Definition</a></td>
+</tr>
+<tr>
+<td>alias</td>
+<td>Ja</td>
+<td>Addressing of the datastream/characteristic <a href="#addressing">Definition</a></td>
+</tr>
+<tr>
+<td>recursive</td>
+<td>Yes</td>
+<td>Recursive deletion (all children will be deleted as well) starting at the selected resource</td>
+</tr>
+</tbody></table>
+
+<h3 id="http-status">HTTP Status</h3>
+
+<table><thead>
+<tr>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>2*, 3*</td>
+<td>Successful query</td>
+</tr>
+<tr>
+<td>400</td>
+<td>Parameter necessary, validation failed, see error report</td>
+</tr>
+<tr>
+<td>500</td>
+<td>Error when processing the query. Please mail to <a href="mailto:support@linemetrics.com">support@linemetrics.com</a></td>
+</tr>
+</tbody></table>
+
+<h2 id="update-a-resource">Update a resource</h2>
+
+<blockquote>
+<p>Update a resource</p>
+</blockquote>
+<pre class="highlight shell"><code>curl <span class="s2">"https://lm3api.linemetrics.com/v2/object/{{CUSTOM_KEY}}/{{ALIAS}}"</span>
+  -X POST
+  -H <span class="s2">"Authorization: Bearer {{KEY}}"</span>
+  -d <span class="s2">"
+  {
+      "</span>custom_key<span class="s2">" : "</span>...<span class="s2">",
+      "</span><span class="nb">alias</span><span class="s2">" : "</span>...<span class="s2">",
+      "</span>name<span class="s2">" : "</span>...<span class="s2">"
+  }
+  "</span>
+</code></pre>
+
+<blockquote>
+<p>Response from server</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"message"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Update Successful"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>Using this interface, resources can be changed. In the current version, the options are limited to basic functions.</p>
+
+<h3 id="get-parameter">GET-Parameter</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Optional</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>custom_key</td>
+<td>No</td>
+<td>Addressing of the asset <a href="#addressing">Definition</a></td>
+</tr>
+<tr>
+<td>alias</td>
+<td>Yes</td>
+<td>Addressing of the datastream/characteristic <a href="#addressing">Definition</a></td>
+</tr>
+</tbody></table>
+
+<h3 id="post-parameter">POST-Parameter</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Optional</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>custom_key</td>
+<td>Yes</td>
+<td>New addressing of the asset <a href="#addressing">Definition</a></td>
+</tr>
+<tr>
+<td>alias</td>
+<td>Yes</td>
+<td>New addressing of the datastream/characteristic <a href="#addressing">Definition</a></td>
+</tr>
+<tr>
+<td>name</td>
+<td>Yes</td>
+<td>Visual identifier of the resource</td>
+</tr>
+<tr>
+<td>parent</td>
+<td>Yes</td>
+<td>Parent object under which the actual object will be added. Addressing of the parent object via objectID or customKey <a href="#asset">Definition</a></td>
+</tr>
+</tbody></table>
+
+<aside class="success">
+For a resource you can either define custom_key or alias, but not both at the same time.
+</aside>
+
+<aside class="success">
+To add an object to the main root of the object tree, please use `null` for parent
+</aside>
+
+<h3 id="http-status">HTTP Status</h3>
+
+<table><thead>
+<tr>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>2*, 3*</td>
+<td>Successful query</td>
+</tr>
+<tr>
+<td>400</td>
+<td>Parameter necessary, validation failed, see error report</td>
+</tr>
+<tr>
+<td>404</td>
+<td>Resource not found</td>
+</tr>
+<tr>
+<td>500</td>
+<td>Error when updating resource. Please mail to  <a href="mailto:support@linemetrics.com">support@linemetrics.com</a></td>
+</tr>
+</tbody></table>
+
+<h1 id="file-resources">File resources</h1>
+
+<h2 id="query-file-resources">Query file resources</h2>
+
+<blockquote>
+<p>Query file</p>
+</blockquote>
+<pre class="highlight shell"><code>curl <span class="s2">"https://lm3api.linemetrics.com/v2/file/{{FILE_ID}}"</span>
+  -H <span class="s2">"Authorization: Bearer {{key}}"</span>
+</code></pre>
+
+<blockquote>
+<p>Response from server
+<code class="prettyprint">
+binary data
+</code></p>
+</blockquote>
+
+<p>With this interface, a file resource can be queried.</p>
+
+<h3 id="parameter">Parameter</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Optional</th>
+<th>Beschreibung</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>file_id</td>
+<td>No</td>
+<td>Addressing of the File</td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<p>In success, the binary data of the file are transmitted.</p>
+
+<h3 id="http-status">HTTP Status</h3>
+
+<table><thead>
+<tr>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>2*, 3*</td>
+<td>Successful query</td>
+</tr>
+<tr>
+<td>400</td>
+<td>Parameter necessary, validation failed, see error report</td>
+</tr>
+<tr>
+<td>500</td>
+<td>Error when processing the query. Please mail to  <a href="mailto:support@linemetrics.com">support@linemetrics.com</a></td>
+</tr>
+</tbody></table>
+
+<h1 id="qr-code-ressourcen">QR Code Ressourcen</h1>
+
+<h2 id="query-resources">Query resources</h2>
+
+<blockquote>
+<p>Query ressource</p>
+</blockquote>
+<pre class="highlight shell"><code>curl <span class="s2">"https://lm3api.linemetrics.com/v2/link/{{link_id}}"</span>
+  -H <span class="s2">"Authorization: Bearer {{key}}"</span>
+</code></pre>
+
+<blockquote>
+<p>Response from server</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+    </span><span class="nt">"object_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"payload"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"..."</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="w"> </span><span class="p">}</span><span class="w">    
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>With this interface objects, measurement points, files or guidances can be queried by a link ID.
+The link_id (object_id) in a QR Code URL is located as a parameter.</p>
+
+<h3 id="parameter">Parameter</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Optional</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>link_id</td>
+<td>No</td>
+<td>Addressing of the link</td>
+</tr>
+</tbody></table>
+
+<h3 id="antwort">Antwort</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>object_id</td>
+<td>The distinct ID of the object</td>
+</tr>
+<tr>
+<td>object_type</td>
+<td>Type of resource</td>
+</tr>
+<tr>
+<td>payload</td>
+<td>resource-specific data</td>
+</tr>
+<tr>
+<td>children_info</td>
+<td>Key/value list with object type as key and number of sub-objects as value</td>
+</tr>
+<tr>
+<td>custom_key</td>
+<td>Custom key (if the resource is an asset and the value has been defined)</td>
+</tr>
+</tbody></table>
+
+<h3 id="http-status">HTTP Status</h3>
+
+<table><thead>
+<tr>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>2*, 3*</td>
+<td>Successful query</td>
+</tr>
+<tr>
+<td>400</td>
+<td>Parameter necessary, validation failed, see error report</td>
+</tr>
+<tr>
+<td>404</td>
+<td>Link not found</td>
+</tr>
+<tr>
+<td>404</td>
+<td>Resource not found</td>
+</tr>
+<tr>
+<td>403</td>
+<td>No authorization</td>
+</tr>
+<tr>
+<td>406</td>
+<td>Empty link</td>
+</tr>
+<tr>
+<td>500</td>
+<td>Error when processing the query. Please mail to  <a href="mailto:support@linemetrics.com">support@linemetrics.com</a></td>
+</tr>
+</tbody></table>
+
+<h2 id="update-a-link">Update a link</h2>
+
+<blockquote>
+<p>Update link</p>
+</blockquote>
+<pre class="highlight shell"><code>    curl <span class="s2">"https://lm3api.linemetrics.com/v2/link/{{link_id}}"</span>
+  -X POST
+  -H <span class="s2">"Authorization: Bearer {{KEY}}"</span>
+  -d <span class="s2">" { "</span>object_id<span class="s2">" : "</span>...<span class="s2">" "</span><span class="nb">type</span><span class="s2">": "</span>...<span class="s2">"} "</span>
+</code></pre>
+
+<blockquote>
+<p>Response from server</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"message"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Update Successful"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>You can use this interface to fill an empty link object with data.
+The link_id (object_id) in a QR Code URL is located as a parameter.</p>
+
+<h3 id="get-parameter">GET-Parameter</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Optional</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>link_id</td>
+<td>Nein</td>
+<td>ID of the link</td>
+</tr>
+</tbody></table>
+
+<h3 id="post-parameter">POST-Parameter</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Optional</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>object_id</td>
+<td>No</td>
+<td>The ID of the object to be linked</td>
+</tr>
+<tr>
+<td>type</td>
+<td>No</td>
+<td>Type of the object to be linked (object, attribute, guidance, document)</td>
+</tr>
+</tbody></table>
+
+<h3 id="http-status">HTTP Status</h3>
+
+<table><thead>
+<tr>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>2*, 3*</td>
+<td>Successful query</td>
+</tr>
+<tr>
+<td>400</td>
+<td>Parameter necessary, validation failed, see error report</td>
+</tr>
+<tr>
+<td>404</td>
+<td>Link not found</td>
+</tr>
+<tr>
+<td>406</td>
+<td>The link is not empty</td>
+</tr>
+<tr>
+<td>500</td>
+<td>Error when updating resource. Please mail to  <a href="mailto:support@linemetrics.com">support@linemetrics.com</a></td>
+</tr>
+</tbody></table>
+
+<h2 id="unlink">Unlink</h2>
+
+<blockquote>
+<p>Unlink</p>
+</blockquote>
+<pre class="highlight shell"><code>  curl <span class="s2">"https://lm3api.linemetrics.com/v2/link/{{link_id}}"</span>
+    -X Delete
+    -H <span class="s2">"Authorization: Bearer {{KEY}}"</span>
+</code></pre>
+
+<blockquote>
+<p>Response from server</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"message"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Deleted Successful"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>With this interface links can be detached again.</p>
+
+<h3 id="parameter">Parameter</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Optional</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>link_id</td>
+<td>Nein</td>
+<td>Adressierung der Verknüpfung /</td>
+</tr>
+</tbody></table>
+
+<h3 id="http-status">HTTP Status</h3>
+
+<table><thead>
+<tr>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>2*, 3*</td>
+<td>Successful detached</td>
+</tr>
+<tr>
+<td>400</td>
+<td>Parameter necessary, validation failed, see error report</td>
+</tr>
+<tr>
+<td>404</td>
+<td>Link not found</td>
+</tr>
+<tr>
+<td>406</td>
+<td>The link is empty</td>
+</tr>
+<tr>
+<td>500</td>
+<td>Error when updating resource. Please mail to  <a href="mailto:support@linemetrics.com">support@linemetrics.com</a></td>
+</tr>
+</tbody></table>
+
+<h1 id="templates">Templates</h1>
+
+<h2 id="query-existing-templates">Query existing templates</h2>
+
+<blockquote>
+<p>Query templates</p>
+</blockquote>
+<pre class="highlight shell"><code>curl <span class="s2">"https://lm3api.linemetrics.com/v2/templates"</span>
+  -H <span class="s2">"Authorization: Bearer {{KEY}}"</span>
+</code></pre>
+
+<blockquote>
+<p>Response from server</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"uid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w"> </span><span class="nt">"..."</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="w"> </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+
+<p>Using this interface, all existing and available templates can be queried.</p>
+
+<h3 id="response">Response</h3>
+
+<p>List of templates</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>uid</td>
+<td>Distinct ID of the template</td>
+</tr>
+<tr>
+<td>name</td>
+<td>Visual identifier of the template</td>
+</tr>
+</tbody></table>
+
+<h2 id="query-required-fields">Query required fields</h2>
+
+<blockquote>
+<p>Query required fields</p>
+</blockquote>
+<pre class="highlight shell"><code>curl <span class="s2">"https://lm3api.linemetrics.com/v2/template/{{TEMPLATE_UID}}/required-fields"</span>
+  -H <span class="s2">"Authorization: Bearer {{KEY}}"</span>
+</code></pre>
+
+<blockquote>
+<p>Response from server</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"uid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"data_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"alias"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w"> </span><span class="nt">"..."</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="w"> </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre>
+
+<p>Using this interface, all required fields of the transmitted template can be queried</p>
+
+<h3 id="parameter">Parameter</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Optional</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>template_uid</td>
+<td>No</td>
+<td>Distinct ID of the template</td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<p>List of templates</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>uid</td>
+<td>Distinct ID of the mandatory field</td>
+</tr>
+<tr>
+<td>data_type</td>
+<td>Datatype to write data on a datastream/characteristic <a href="#addressing">Definition</a></td>
+</tr>
+<tr>
+<td>alias</td>
+<td>Addressing of the datastream/characteristic <a href="#addressing">Definition</a></td>
+</tr>
+</tbody></table>
+
+<h3 id="http-status">HTTP Status</h3>
+
+<table><thead>
+<tr>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>2*, 3*</td>
+<td>Successfull query</td>
+</tr>
+<tr>
+<td>400</td>
+<td>Parameter necessary, validation failed, see error report</td>
+</tr>
+<tr>
+<td>404</td>
+<td>Template not found</td>
+</tr>
+</tbody></table>
+
+<h2 id="create-asset-using-a-template">Create asset using a template</h2>
+
+<blockquote>
+<p>Create asset using a template</p>
+</blockquote>
+<pre class="highlight shell"><code>curl <span class="s2">"https://lm3api.linemetrics.com/v2/template/{{TEMPLATE_UID}}"</span>
+  -X POST
+  -H <span class="s2">"Authorization: Bearer {{KEY}}"</span>
+  -d <span class="s2">"
+  {
+      "</span><span class="o">{{</span>ALIAS<span class="o">}}</span><span class="s2">" : {
+        "</span>val<span class="s2">" : 1.678
+      }
+  }
+  "</span>
+</code></pre>
+
+<blockquote>
+<p>Response from server</p>
+</blockquote>
+<pre class="highlight json"><code><span class="w">  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"uid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>Using this interface, a new asset can be created out of an existing template</p>
+
+<h3 id="get-parameter">GET-Parameter</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Optional</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>template_uid</td>
+<td>No</td>
+<td>Distinct ID of the template</td>
+</tr>
+</tbody></table>
+
+<h3 id="post-parameter">POST-Parameter</h3>
+
+<p>The POST-Parameter go by the mandatory fields of the template. In case no mandatory fields are defined in the template, you do not have to define anything here. Otherwise, the alias or the UID will be used as key and the value of the mandatory field will be used as the value, dependent on the datatype.</p>
+
+<h3 id="response">Response</h3>
+
+<p>UID of the just created asset.</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>uid</td>
+<td>Distinct ID of the asset</td>
+</tr>
+</tbody></table>
+
+<h3 id="http-status">HTTP Status</h3>
+
+<table><thead>
+<tr>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>2*, 3*</td>
+<td>Successful query</td>
+</tr>
+<tr>
+<td>400</td>
+<td>Parameter necessary, validation failed, see error report</td>
+</tr>
+<tr>
+<td>500</td>
+<td>Error when creating the asset. Please mail to <a href="mailto:support@linemetrics.com">support@linemetrics.com</a></td>
+</tr>
+</tbody></table>
+
+<h1 id="article">Article</h1>
+
+<h2 id="query-single-article">Query single article</h2>
+
+<blockquote>
+<p>Query article</p>
+</blockquote>
+<pre class="highlight shell"><code>curl <span class="s2">"https://lm3api.linemetrics.com/erp/article/{{ARTICLE_KEY}}/"</span>
+  -H <span class="s2">"Authorization: Bearer {{KEY}}"</span>
+</code></pre>
+
+<blockquote>
+<p>Response from server</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"object_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"object_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"article"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"model_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"erp"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"payload"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"images"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"file_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"thumbnail_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"article"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"description"</span><span class="p">:</span><span class="w">  </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"short_description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"article_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"article_number"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"tariff_number"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"article_group"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"article_supplier"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"website"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"price"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"currency"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">""</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">},</span><span class="w">
+    </span><span class="nt">"payable"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="err">/</span><span class="kc">false</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"shippable"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="err">/</span><span class="kc">false</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"documents"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+             </span><span class="p">{</span><span class="w">
+            </span><span class="nt">"file_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"document_format"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="w">
+              </span><span class="p">}</span><span class="w">
+         </span><span class="p">],</span><span class="w">
+    </span><span class="nt">"guidance"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+              </span><span class="p">{</span><span class="w">
+            </span><span class="nt">"file_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"document_format"</span><span class="p">:</span><span class="w"> </span><span class="s2">"guidance"</span><span class="w">
+              </span><span class="p">}</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>Using this interface, existing articles can be queried by using articleID or EAN-number.</p>
+
+<h3 id="parameter">Parameter</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Optional</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>article_key</td>
+<td>No</td>
+<td>ArticleID or EAN-number</td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>object_id</td>
+<td>Distinct ID of article</td>
+</tr>
+<tr>
+<td>object_type</td>
+<td>fix &ldquo;article&rdquo;</td>
+</tr>
+<tr>
+<td>model_type</td>
+<td>fix &ldquo;erp&rdquo;</td>
+</tr>
+<tr>
+<td>payload</td>
+<td>resource-specific data</td>
+</tr>
+<tr>
+<td>images</td>
+<td>Images that are added to the article</td>
+</tr>
+<tr>
+<td>titel</td>
+<td>title of the article</td>
+</tr>
+<tr>
+<td>description</td>
+<td>description of the article</td>
+</tr>
+<tr>
+<td>short_description</td>
+<td>short form of the description</td>
+</tr>
+<tr>
+<td>article_type</td>
+<td>Distinction whether the article is a product, a service or other</td>
+</tr>
+<tr>
+<td>article_number</td>
+<td>article number</td>
+</tr>
+<tr>
+<td>tariff_number</td>
+<td>customs tarif number</td>
+</tr>
+<tr>
+<td>article_group</td>
+<td>Article group, the article belongs to</td>
+</tr>
+<tr>
+<td>article_supplier</td>
+<td>Supplier from which the article is bought</td>
+</tr>
+<tr>
+<td>website</td>
+<td>Website of the supplier</td>
+</tr>
+<tr>
+<td>payable</td>
+<td>if the article is payable</td>
+</tr>
+<tr>
+<td>shippable</td>
+<td>whether an article has to be shipped or not</td>
+</tr>
+<tr>
+<td>documents</td>
+<td>list of documents that are added to the article guidance</td>
+</tr>
+</tbody></table>
+
+<h3 id="http-status">HTTP Status</h3>
+
+<table><thead>
+<tr>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>200</td>
+<td>Process successful</td>
+</tr>
+<tr>
+<td>500</td>
+<td>article not found</td>
+</tr>
+</tbody></table>
+
+<h2 id="query-single-guidance">Query single guidance</h2>
+
+<blockquote>
+<p>Query guidance</p>
+</blockquote>
+<pre class="highlight shell"><code>curl <span class="s2">"https://lm3api.linemetrics.com/erp/guidance/{{GUIDANCE}}/"</span>
+  -H <span class="s2">"Authorization: Bearer {{KEY}}"</span>
+</code></pre>
+
+<blockquote>
+<p>Response from server</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"object_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"object_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"guidance"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"model_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"erp"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"payload"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"guidance"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"images"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"file_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"thumbnail_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="nt">"duration"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"difficulty"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"tools"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"..."</span><span class="p">,</span><span class="w"> </span><span class="s2">"..."</span><span class="w"> </span><span class="p">],</span><span class="w">
+    </span><span class="nt">"skills"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"..."</span><span class="p">,</span><span class="w"> </span><span class="s2">"..."</span><span class="w"> </span><span class="p">],</span><span class="w">
+    </span><span class="nt">"steps"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"order"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"template"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"content"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+          </span><span class="nt">"images"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w">
+              </span><span class="nt">"image"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+              </span><span class="nt">"smallImage"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+              </span><span class="nt">"bigImage"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="w">
+            </span><span class="p">},]</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+      </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>Using this interface, guidance can be queried by using GuidanceID.</p>
+
+<h3 id="parameter">Parameter</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Optional</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>guidance</td>
+<td>No</td>
+<td>GuidanceID</td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>object_id</td>
+<td>Distinct ID of the guidance</td>
+</tr>
+<tr>
+<td>object_type</td>
+<td>fix &ldquo;guidance&rdquo;</td>
+</tr>
+<tr>
+<td>model_type</td>
+<td>fix &ldquo;erp&rdquo;</td>
+</tr>
+<tr>
+<td>payload</td>
+<td>Resource-specific data</td>
+</tr>
+<tr>
+<td>images</td>
+<td>main image of the guidance</td>
+</tr>
+<tr>
+<td>titel</td>
+<td>titel of the guidance</td>
+</tr>
+<tr>
+<td>duration</td>
+<td>time required for using the guidance</td>
+</tr>
+<tr>
+<td>difficulty</td>
+<td>difficulty of the guidance</td>
+</tr>
+<tr>
+<td>tools</td>
+<td>required tools for the guidance</td>
+</tr>
+<tr>
+<td>skills</td>
+<td>required skills for the guidance</td>
+</tr>
+<tr>
+<td>steps</td>
+<td>list of steps to successfully complete the installation steps[id]</td>
+</tr>
+<tr>
+<td>steps[title]</td>
+<td>titel of the step</td>
+</tr>
+<tr>
+<td>steps[order]</td>
+<td>order of the steps</td>
+</tr>
+<tr>
+<td>steps[template]</td>
+<td>type of step text(only text), text_picture(test with picture), text_gallery(text with up to 3 pictures)</td>
+</tr>
+<tr>
+<td>steps[content]</td>
+<td>content of the step</td>
+</tr>
+<tr>
+<td>steps[images]</td>
+<td>list of pictures that are shown at the step</td>
+</tr>
+</tbody></table>
+
+<h3 id="http-status">HTTP Status</h3>
+
+<table><thead>
+<tr>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>200</td>
+<td>Process successful</td>
+</tr>
+<tr>
+<td>500</td>
+<td>Guidance not found</td>
+</tr>
+</tbody></table>
+
+      </div>
+      <div class="dark-box">
+          <div class="lang-selector">
+                <a href="#" data-language-name="shell">shell</a>
+          </div>
+      </div>
+    </div>
+  </body>
+</html>
