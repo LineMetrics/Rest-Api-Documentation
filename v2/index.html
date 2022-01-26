@@ -142,7 +142,7 @@ dann Abfragen auf die anderen Ressourcen (Daten/Objekt Ressourcen) durchgeführt
 <blockquote>
 <p>Authentifizieren mittels OAuth &amp; Client-Credentials </p>
 </blockquote>
-<pre class="highlight shell"><code>curl <span class="s2">"https://lm3api.linemetrics.com/oauth/access_token"</span>
+<pre class="highlight shell"><code>curl <span class="s2">"https://restapi.linemetrics.com/oauth/access_token"</span>
   -d <span class="s1">'client_id={{CLIENT_ID}}&amp;grant_type=client_credentials&amp;client_secret={{CLIENT_SECRET}}'</span>
   -X POST
 </code></pre>
@@ -206,7 +206,7 @@ Dieser ermöglicht durch die Authentifizierung über die Parameter <code class="
 <blockquote>
 <p>Authentifizieren mittels OAuth &amp; Passwort-Grant</p>
 </blockquote>
-<pre class="highlight shell"><code>curl <span class="s2">"https://lm3api.linemetrics.com/oauth/access_token"</span>
+<pre class="highlight shell"><code>curl <span class="s2">"https://restapi.linemetrics.com/oauth/access_token"</span>
   -d <span class="s1">'client_id={{CLIENT_ID}}&amp;grant_type=password&amp; // KEIN ZEILENUMBRUCH
       client_secret={{CLIENT_SECRET}}&amp;email={{EMAIL}}&amp;password={{PASSWORD}}'</span>
   -X POST
@@ -521,7 +521,7 @@ Nahezu alle Funktionen ermöglichen eine Adressierung einer Ressource über die 
 <blockquote>
 <p>Datentyp abfragen</p>
 </blockquote>
-<pre class="highlight shell"><code>curl <span class="s2">"https://lm3api.linemetrics.com/v2/data/{{CUSTOM_KEY}}/{{ALIAS}}/config"</span>
+<pre class="highlight shell"><code>curl <span class="s2">"https://restapi.linemetrics.com/v2/data/{{CUSTOM_KEY}}/{{ALIAS}}/config"</span>
   -H <span class="s2">"Authorization: Bearer {{KEY}}"</span>
 </code></pre>
 
@@ -580,7 +580,7 @@ ist es notwendig, dass in Erfahrung gebracht werden kann, um welche Datentypen e
 <blockquote>
 <p>Speichern von Werten</p>
 </blockquote>
-<pre class="highlight shell"><code>curl <span class="s2">"https://lm3api.linemetrics.com/v2/data/{{CUSTOM_KEY}}/{{ALIAS}}"</span>
+<pre class="highlight shell"><code>curl <span class="s2">"https://restapi.linemetrics.com/v2/data/{{CUSTOM_KEY}}/{{ALIAS}}"</span>
   -X POST
   -H <span class="s2">"Authorization: Bearer {{KEY}}"</span>
   -d <span class="s2">"
@@ -683,7 +683,7 @@ Optional kann ein Zeitstempel beim jeweiligen DatenTyp per `ts` als UTC Zeitstem
 <blockquote>
 <p>Speichern von Werten (Key - Value)</p>
 </blockquote>
-<pre class="highlight shell"><code>curl <span class="s2">"https://lm3api.linemetrics.com/v2/data/{{CUSTOM_KEY}}/{{ALIAS}}"</span>
+<pre class="highlight shell"><code>curl <span class="s2">"https://restapi.linemetrics.com/v2/data/{{CUSTOM_KEY}}/{{ALIAS}}"</span>
   -X POST
   -H <span class="s2">"Authorization: Bearer {{KEY}}"</span>
   -d <span class="s2">"
@@ -717,7 +717,7 @@ Dadurch ist auch der Status Code aus der Antwort eindeutig addressierbar.
 <blockquote>
 <p>Lesen von Werten</p>
 </blockquote>
-<pre class="highlight shell"><code>curl <span class="s2">"https://lm3api.linemetrics.com/v2/data/{{CUSTOM_KEY}}/{{ALIAS}}?function=last_value"</span>
+<pre class="highlight shell"><code>curl <span class="s2">"https://restapi.linemetrics.com/v2/data/{{CUSTOM_KEY}}/{{ALIAS}}?function=last_value"</span>
   -H <span class="s2">"Authorization: Bearer {{key}}"</span>
 </code></pre>
 
@@ -768,7 +768,7 @@ jedes Element beinhaltet aber immer einen Zeitstempel.</p>
 <blockquote>
 <p>Lesen von Werten</p>
 </blockquote>
-<pre class="highlight shell"><code>curl <span class="s2">"https://lm3api.linemetrics.com/v2/data/{{CUSTOM_KEY}}/{{ALIAS}}? ... PARAMETER ... "</span>
+<pre class="highlight shell"><code>curl <span class="s2">"https://restapi.linemetrics.com/v2/data/{{CUSTOM_KEY}}/{{ALIAS}}? ... PARAMETER ... "</span>
   -H <span class="s2">"Authorization: Bearer {{key}}"</span>
 </code></pre>
 
@@ -803,6 +803,27 @@ jedes Element beinhaltet aber immer einen Zeitstempel.</p>
   </span><span class="p">{</span><span class="w"> </span><span class="nt">"..."</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="w"> </span><span class="p">}</span><span class="w">
 </span><span class="p">]</span><span class="w">
 </span></code></pre>
+
+<blockquote>
+<p>Beispiele:</p>
+</blockquote>
+<pre class="highlight shell"><code>
+FROM=<span class="s2">$(date --date 'now - 60 minutes' +"%s%3N")</span>
+TO=<span class="s2">$(date +"%s%3N")</span>
+URLDATA=<span class="s2">https://restapi.linemetrics.com/v2/data/${CUSTOM_KEY}/${ALIAS}</span>
+
+# Beispiel: default
+curl <span class="s2">"$URLDATA?time_from=$FROM&time_to=$TO&granularity=PT1M&time_zone=Europe/Vienna&function=default"</span>
+  -H <span class="s2">"Authorization: Bearer {{key}}"</span>
+
+# Beispiel: raw
+curl <span class="s2">"$URLDATA?time_from=$FROM&time_to=$TO&granularity=PT1M&time_zone=Europe/Vienna&function=raw"</span>
+  -H <span class="s2">"Authorization: Bearer {{key}}"</span>
+</code></pre>
+
+
+
+
 
 <p>Für das Abfragen von Daten werden sogenannte Funktionen verwendet. Eine Funktion definiert hierbei, wie die Daten
 zurückgegeben werden sollen. Für die Abfrage werden verschiedenste Attribute benötigt (Zeitraum der Abfrage,
@@ -989,7 +1010,7 @@ Eine genauere Erklärung findet man im Bereich <a href="#adressierung">Adressier
 <blockquote>
 <p>Objekt abfragen</p>
 </blockquote>
-<pre class="highlight shell"><code>curl <span class="s2">"https://lm3api.linemetrics.com/v2/object/{{CUSTOM_KEY}}/{{ALIAS}}"</span>
+<pre class="highlight shell"><code>curl <span class="s2">"https://restapi.linemetrics.com/v2/object/{{CUSTOM_KEY}}/{{ALIAS}}"</span>
   -H <span class="s2">"Authorization: Bearer {{key}}"</span>
 </code></pre>
 
@@ -1106,7 +1127,7 @@ Eine genauere Erklärung findet man im Bereich <a href="#adressierung">Adressier
 <blockquote>
 <p>Ressourcen Kinder abfragen</p>
 </blockquote>
-<pre class="highlight shell"><code>curl <span class="s2">"https://lm3api.linemetrics.com/v2/children/{{CUSTOM_KEY}}/{{ALIAS}}? ... PARAMETER ..."</span>
+<pre class="highlight shell"><code>curl <span class="s2">"https://restapi.linemetrics.com/v2/children/{{CUSTOM_KEY}}/{{ALIAS}}? ... PARAMETER ..."</span>
   -H <span class="s2">"Authorization: Bearer {{key}}"</span>
 </code></pre>
 
@@ -1261,7 +1282,7 @@ Zum Laden der ersten Ebene der Objekte, KEINEN custom_key übergeben.
 <blockquote>
 <p>Löschen einer Ressource</p>
 </blockquote>
-<pre class="highlight shell"><code>curl <span class="s2">"https://lm3api.linemetrics.com/v2/object/{{CUSTOM_KEY}}/{{ALIAS}}? ... PARAMETER ..."</span>
+<pre class="highlight shell"><code>curl <span class="s2">"https://restapi.linemetrics.com/v2/object/{{CUSTOM_KEY}}/{{ALIAS}}? ... PARAMETER ..."</span>
   -X DELETE
   -H <span class="s2">"Authorization: Bearer {{key}}"</span>
 </code></pre>
@@ -1321,7 +1342,7 @@ Zum Laden der ersten Ebene der Objekte, KEINEN custom_key übergeben.
 <blockquote>
 <p>Updaten einer Ressource</p>
 </blockquote>
-<pre class="highlight shell"><code>curl <span class="s2">"https://lm3api.linemetrics.com/v2/object/{{CUSTOM_KEY}}/{{ALIAS}}"</span>
+<pre class="highlight shell"><code>curl <span class="s2">"https://restapi.linemetrics.com/v2/object/{{CUSTOM_KEY}}/{{ALIAS}}"</span>
   -X POST
   -H <span class="s2">"Authorization: Bearer {{KEY}}"</span>
   -d <span class="s2">"
@@ -1437,7 +1458,7 @@ Damit ein Objekt auf der Hauptwurzel des Objektbaumes gehängt wird, bei parent 
 <blockquote>
 <p>File abfragen</p>
 </blockquote>
-<pre class="highlight shell"><code>curl <span class="s2">"https://lm3api.linemetrics.com/v2/file/{{FILE_ID}}"</span>
+<pre class="highlight shell"><code>curl <span class="s2">"https://restapi.linemetrics.com/v2/file/{{FILE_ID}}"</span>
   -H <span class="s2">"Authorization: Bearer {{key}}"</span>
 </code></pre>
 
@@ -1499,7 +1520,7 @@ Binärdaten
 <blockquote>
 <p>Ressource abfragen</p>
 </blockquote>
-<pre class="highlight shell"><code>curl <span class="s2">"https://lm3api.linemetrics.com/v2/link/{{link_id}}"</span>
+<pre class="highlight shell"><code>curl <span class="s2">"https://restapi.linemetrics.com/v2/link/{{link_id}}"</span>
   -H <span class="s2">"Authorization: Bearer {{key}}"</span>
 </code></pre>
 
@@ -1608,7 +1629,7 @@ In einer im LineMetrics QR Code enthaltenen URL, befindet sich die link_id (obje
 <blockquote>
 <p>Updaten einer Verknüpfung</p>
 </blockquote>
-<pre class="highlight shell"><code>    curl <span class="s2">"https://lm3api.linemetrics.com/v2/link/{{link_id}}"</span>
+<pre class="highlight shell"><code>    curl <span class="s2">"https://restapi.linemetrics.com/v2/link/{{link_id}}"</span>
   -X POST
   -H <span class="s2">"Authorization: Bearer {{KEY}}"</span>
   -d <span class="s2">" { "</span>object_id<span class="s2">" : "</span>...<span class="s2">" "</span><span class="nb">type</span><span class="s2">": "</span>...<span class="s2">"} "</span>
@@ -1699,7 +1720,7 @@ In einer im LineMetrics QR Code enthaltenen URL, befindet sich die link_id (obje
 <blockquote>
 <p>Lösen einer Verknüpfung</p>
 </blockquote>
-<pre class="highlight shell"><code>  curl <span class="s2">"https://lm3api.linemetrics.com/v2/link/{{link_id}}"</span>
+<pre class="highlight shell"><code>  curl <span class="s2">"https://restapi.linemetrics.com/v2/link/{{link_id}}"</span>
     -X Delete
     -H <span class="s2">"Authorization: Bearer {{KEY}}"</span>
 </code></pre>
@@ -1768,7 +1789,7 @@ In einer im LineMetrics QR Code enthaltenen URL, befindet sich die link_id (obje
 <blockquote>
 <p>Vorlagen abfragen</p>
 </blockquote>
-<pre class="highlight shell"><code>curl <span class="s2">"https://lm3api.linemetrics.com/v2/templates"</span>
+<pre class="highlight shell"><code>curl <span class="s2">"https://restapi.linemetrics.com/v2/templates"</span>
   -H <span class="s2">"Authorization: Bearer {{KEY}}"</span>
 </code></pre>
 
@@ -1811,7 +1832,7 @@ In einer im LineMetrics QR Code enthaltenen URL, befindet sich die link_id (obje
 <blockquote>
 <p>Mussfelder abfragen</p>
 </blockquote>
-<pre class="highlight shell"><code>curl <span class="s2">"https://lm3api.linemetrics.com/v2/template/{{TEMPLATE_UID}}/required-fields"</span>
+<pre class="highlight shell"><code>curl <span class="s2">"https://restapi.linemetrics.com/v2/template/{{TEMPLATE_UID}}/required-fields"</span>
   -H <span class="s2">"Authorization: Bearer {{KEY}}"</span>
 </code></pre>
 
@@ -1897,7 +1918,7 @@ In einer im LineMetrics QR Code enthaltenen URL, befindet sich die link_id (obje
 <blockquote>
 <p>Asset von Vorlage erstellen</p>
 </blockquote>
-<pre class="highlight shell"><code>curl <span class="s2">"https://lm3api.linemetrics.com/v2/template/{{TEMPLATE_UID}}"</span>
+<pre class="highlight shell"><code>curl <span class="s2">"https://restapi.linemetrics.com/v2/template/{{TEMPLATE_UID}}"</span>
   -X POST
   -H <span class="s2">"Authorization: Bearer {{KEY}}"</span>
   -d <span class="s2">"
